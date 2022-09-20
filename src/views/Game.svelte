@@ -1,4 +1,6 @@
 <script>
+    import { each } from "svelte/internal";
+
 
 import Range from "../components/Range.svelte";
 
@@ -8,12 +10,16 @@ import Range from "../components/Range.svelte";
 
   const nourriture = 100;
   const vie = 30;
-  const argent = 50;
-  const src = "src/assets/pnj.jpg";
+  const argent = 50;  
+  const src = "src/assets/pnj.png";
+  const srcBackground = "src/assets/forest.jpg";
+
+  const choices = ["choix 1","choix 2","choix 3"]
 
   $: styleNourriture = `--value: ${nourriture}; --thickness: 2px`;
   $: styleVie = `--value: ${vie}; --thickness: 2px`;
   $: styleArgent = `--value: ${argent}; --thickness: 2px`;
+  $: bgImageBackground = `background-image: url("${srcBackground}");`;
   $: bgImage = `background-image: url("${src}");`;
 </script>
 
@@ -55,13 +61,23 @@ import Range from "../components/Range.svelte";
 
     </div>
 
-    <div class="row-span-5 bg-cover flex justify-center items-end" style={bgImage}>
-      <div class="card glass w-11/12 h-1/5 mb-2">
-        <div class="card-body text-center">
-          <p>Hey ! you're finally awake ?</p>
+    <div class="row-span-5 bg-cover" style={bgImageBackground}>
+      <div class="bg-cover bg-no-repeat w-full h-full flex justify-center items-end" style={bgImage}>
+        <div class="card bg-white w-11/12 bg-opacity-80 mb-2">
+          <div class="card-body">
+            <h2 class="card-title">Ifrit</h2>
+            <p>Hey ! you're finally awake ?</p>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="row-span-3">03</div>
+    <div class="grid grid-cols-1 content-center gap-2">
+      {#each choices as choice}
+        <div class="btn text-center">
+          {choice}
+        </div>
+      {/each}
+    </div>
+
 </div>
