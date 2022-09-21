@@ -16,7 +16,7 @@
         disabled
     />
     <div class="flex justify-between">
-        <p class="ml-2">Gentillesse</p>
-        <p class="mr-2">Méchanceté</p>
+        <p class="ml-2 text-white">Gentillesse</p>
+        <p class="mr-2 text-white">Méchanceté</p>
     </div>
 </div>
