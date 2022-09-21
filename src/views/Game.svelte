@@ -2,6 +2,7 @@
 
   import Range from "../components/Range.svelte";
   import { onMount } from 'svelte';
+  import DataService from '../services/DataService';
 
   /*------------------------*/
   /*------ CONSTANTES ------*/
@@ -15,23 +16,30 @@
     choix : ["choix 1","choix 2","choix 3"],
   }
 
-  onMount(async () => {
-      console.log(import.meta.env.VITE_API_URL);
-      // const response = await fetch(import.meta.env.API_URL);
-      // let pnjResponse = await response.json();
-      // pnj.pnjName = pnjResponse.pnjName;
-      // pnj.description = pnjResponse.description;
-      // pnj.pngImg = pnjResponse.pngImg;
-      // pnj.bgImg = pnjResponse.bgImg;
-      // pnj.choix = pnjResponse.choix;
-    });
+  let player = {
+    nourriture: 100,
+    vie: 100,
+    argent: 100,
+    neutrality: 50,
+    step: 0
+  }
 
-  let nourriture = 100;
-  let vie = 100;
-  let argent = 100;  
-  $: styleNourriture = `--value: ${nourriture}; --thickness: 2px`;
-  $: styleVie = `--value: ${vie}; --thickness: 2px`;
-  $: styleArgent = `--value: ${argent}; --thickness: 2px`;
+  onMount(async () => {
+
+      DataService.postNext(player).then((response) =>{
+        console.log(response);
+        // pnj.pnjName = pnjResponse.pnjName;
+        // pnj.description = pnjResponse.description;
+        // pnj.pngImg = pnjResponse.pngImg;
+        // pnj.bgImg = pnjResponse.bgImg;
+        // pnj.choix = pnjResponse.choix;
+      });
+  });
+
+ 
+  $: styleNourriture = `--value: ${player.nourriture}; --thickness: 2px`;
+  $: styleVie = `--value: ${player.vie}; --thickness: 2px`;
+  $: styleArgent = `--value: ${player.argent}; --thickness: 2px`;
 
   let srcPnj = "src/assets/" + pnj.pngImg;
   let srcBackground = "src/assets/" + pnj.bgImg;
@@ -47,27 +55,27 @@
 
       <div class="grid grid-cols-3 justify-center w-screen">
         <div class="flex justify-center">
-          {#if nourriture >= 70}
+          {#if player.nourriture >= 70}
             <div class="radial-progress text-center text-xs text-green-500" style="{styleNourriture}">Nourriture</div>
-          {:else if nourriture > 30}
+          {:else if player.nourriture > 30}
             <div class="radial-progress text-center text-xs text-orange-500" style="{styleNourriture}">Nourriture</div>
           {:else}
             <div class="radial-progress text-center text-xs text-red-500" style="{styleNourriture}">Nourriture</div>
           {/if}
         </div>
         <div class="flex justify-center">
-          {#if vie >= 70}
+          {#if player.vie >= 70}
             <div class="radial-progress text-center text-xs text-green-500" style="{styleVie}">Vie</div>
-          {:else if vie > 30}
+          {:else if player.vie > 30}
             <div class="radial-progress text-center text-xs text-orange-500" style="{styleVie}">Vie</div>
           {:else}
             <div class="radial-progress text-center text-xs text-red-500" style="{styleVie}">Vie</div>
           {/if}
         </div>
         <div class="flex justify-center">
-          {#if argent >= 70}
+          {#if player.argent >= 70}
             <div class="radial-progress text-center text-xs text-green-500" style="{styleArgent}">Argent</div>
-          {:else if argent > 30}
+          {:else if player.argent > 30}
             <div class="radial-progress text-center text-xs text-orange-500" style="{styleArgent}">Argent</div>
           {:else}
             <div class="radial-progress text-center text-xs text-red-500" style="{styleArgent}">Argent</div>
