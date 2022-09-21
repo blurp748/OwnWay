@@ -1,19 +1,44 @@
 <script>
 
   import Range from "../components/Range.svelte";
-  import { onMount } from 'svelte';
   import DataService from '../services/DataService';
+  import { useNavigate } from "svelte-navigator";
+  import { DrumstickIcon, HeartIcon, DollarIcon } from 'svelte-uicons'
 
   /*------------------------*/
   /*------ CONSTANTES ------*/
   /*------------------------*/
+
+  const navigate = useNavigate();
 
   let pnj = {
     pnjName: "Ifrit",
     description: "Hey ! you're finally awake ?",
     pngImg: "pnj.png",
     bgImg: "forest.jpg",
-    choix : ["choix 1","choix 2","choix 3"],
+    choix : [
+      {
+        description: "choix 1",
+        nourriture : 0,
+        vie : 0,
+        argent : -20,
+        neutrality : -50
+      },
+      {
+        description: "choix 2",
+        nourriture : 0,
+        vie : 0,
+        argent : 10,
+        neutrality : 0
+      },
+      {
+        description: "choix 3",
+        nourriture : -80,
+        vie : 0,
+        argent : 0,
+        neutrality : 0
+      }
+    ],
   }
 
   let player = {
@@ -23,62 +48,122 @@
     neutrality: 50,
     step: 0
   }
-
-  onMount(async () => {
-
-      DataService.postNext(player).then((response) =>{
-        console.log(response);
-        // pnj.pnjName = pnjResponse.pnjName;
-        // pnj.description = pnjResponse.description;
-        // pnj.pngImg = pnjResponse.pngImg;
-        // pnj.bgImg = pnjResponse.bgImg;
-        // pnj.choix = pnjResponse.choix;
-      });
-  });
-
  
   $: styleNourriture = `--value: ${player.nourriture}; --thickness: 2px`;
   $: styleVie = `--value: ${player.vie}; --thickness: 2px`;
   $: styleArgent = `--value: ${player.argent}; --thickness: 2px`;
+  $: bgImageBackground = `background-image: url("src/assets/${pnj.bgImg}");`;
+  $: bgImagePnj = `background-image: url("src/assets/${pnj.pngImg}");`;
 
-  let srcPnj = "src/assets/" + pnj.pngImg;
-  let srcBackground = "src/assets/" + pnj.bgImg;
-  $: bgImageBackground = `background-image: url("${srcBackground}");`;
-  $: bgImagePnj = `background-image: url("${srcPnj}");`;
+  /*------------------------*/
+  /*------- FONCTIONS ------*/
+  /*------------------------*/
+
+  function checkPlayerStat(){
+  
+    if(player.nourriture > 100){
+      player.nourriture = 100;
+    }else if(player.nourriture <= 0){
+      navigate('/')
+    }
+
+    if(player.vie > 100){
+      player.vie = 100;
+    }else if(player.vie <= 0){
+      navigate('/')
+    }
+
+    if(player.argent > 100){
+      player.argent = 100;
+    }else if(player.argent <= 0){
+      navigate('/')
+    }
+
+    if(player.neutrality > 100) player.neutrality = 100;
+    if(player.neutrality < 0) player.neutrality = 0;
+
+  }
+
+  function next(choice){
+    
+    console.log(player.argent);
+    player.nourriture += choice.nourriture;
+    player.vie += choice.vie;
+    player.argent += choice.argent;
+    player.neutrality += choice.neutrality;
+    console.log(player.argent);
+
+    checkPlayerStat();
+
+    // DataService.postNext(player).then((response) =>{
+    //     console.log(response);
+    //     pnj.pnjName = response.pnjName;
+    //     pnj.description = response.description;
+    //     pnj.pngImg = response.pngImg;
+    //     pnj.bgImg = response.bgImg;
+    //     pnj.choix = response.choix;
+    // });
+
+    pnj.pnjName = "Ifrit 2";
+    pnj.description = "My name is mathis";
+    pnj.choix = [
+      {
+        description: "choix 3",
+        nourriture : 0,
+        vie : 0,
+        argent : -20,
+        neutrality : 0
+      },
+      {
+        description: "choix 2",
+        nourriture : 0,
+        vie : 0,
+        argent : 10,
+        neutrality : 0
+      },
+      {
+        description: "choix 1",
+        nourriture : -80,
+        vie : 0,
+        argent : 0,
+        neutrality : 0
+      }
+    ];
+  }
 
 </script>
 
 <div class="grid grid-cols-none min-h-screen">
 
     <!-- Stats -->
-    <div class="bg-stone-800 grid grid-rows-2 items-end">
+    <div class="bg-stone-800 grid">
 
-      <div class="grid grid-cols-3 justify-center w-screen">
+      <div class="grid grid-cols-3 items-end w-screen">
         <div class="flex justify-center">
           {#if player.nourriture >= 70}
-            <div class="radial-progress text-center text-xs text-green-500" style="{styleNourriture}">Nourriture</div>
+            <div class="radial-progress text-center text-xs text-green-500" style="{styleNourriture}"><DrumstickIcon size="32"/></div>
           {:else if player.nourriture > 30}
-            <div class="radial-progress text-center text-xs text-orange-500" style="{styleNourriture}">Nourriture</div>
+            <div class="radial-progress text-center text-xs text-orange-500" style="{styleNourriture}"><DrumstickIcon size="32"/></div>
           {:else}
-            <div class="radial-progress text-center text-xs text-red-500" style="{styleNourriture}">Nourriture</div>
+            <div class="radial-progress text-center text-xs text-red-500" style="{styleNourriture}"><DrumstickIcon size="32"/></div>
           {/if}
         </div>
         <div class="flex justify-center">
           {#if player.vie >= 70}
-            <div class="radial-progress text-center text-xs text-green-500" style="{styleVie}">Vie</div>
+            <div class="radial-progress text-center text-xs text-green-500" style="{styleVie}"><HeartIcon size="32"/></div>
           {:else if player.vie > 30}
-            <div class="radial-progress text-center text-xs text-orange-500" style="{styleVie}">Vie</div>
+            <div class="radial-progress text-center text-xs text-orange-500" style="{styleVie}"><HeartIcon size="32"/></div>
           {:else}
-            <div class="radial-progress text-center text-xs text-red-500" style="{styleVie}">Vie</div>
+            <div class="radial-progress text-center text-xs text-red-500" style="{styleVie}"><HeartIcon size="32"/></div>
           {/if}
         </div>
         <div class="flex justify-center">
           {#if player.argent >= 70}
-            <div class="radial-progress text-center text-xs text-green-500" style="{styleArgent}">Argent</div>
+            <div class="radial-progress text-center text-xs text-green-500" style="{styleArgent}"><DollarIcon size="32"/></div>
           {:else if player.argent > 30}
-            <div class="radial-progress text-center text-xs text-orange-500" style="{styleArgent}">Argent</div>
+            <div class="radial-progress text-center text-xs text-orange-500" style="{styleArgent}"><DollarIcon size="32"/></div>
           {:else}
-            <div class="radial-progress text-center text-xs text-red-500" style="{styleArgent}">Argent</div>
+            <div class="radial-progress text-center text-xs text-red-500" style="{styleArgent}"><DollarIcon size="32"/></div>
           {/if}
         </div>
       </div>
@@ -105,8 +190,8 @@
     <div class="bg-stone-800 flex items-center justify-center">
       <div class="w-full h-full grid grid-cols-1 content-center gap-5">
         {#each pnj.choix as choice}
-          <div class="btn text-black bg-orange-200 border-t-black text-center">
-            {choice}
+          <div on:click={next(choice)} class="btn text-black bg-orange-200 border-t-black text-center">
+            {choice.description}
           </div>
         {/each}
       </div>

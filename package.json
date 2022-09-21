@@ -22,6 +22,7 @@
     "axios": "^0.27.2",
     "daisyui": "^2.28.0",
     "dotenv": "^16.0.2",
-    "svelte-navigator": "^3.2.2"
+    "svelte-navigator": "^3.2.2",
+    "svelte-uicons": "^0.0.7"
   }
 }
