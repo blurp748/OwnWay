@@ -11,10 +11,10 @@
 
   const navigate = useNavigate();
 
-  let pnj = {
+  let card = {
     pnjName: "Ifrit",
     description: "Hey ! you're finally awake ?",
-    pngImg: "pnj.png",
+    pngImg: "oldrym.png",
     bgImg: "forest.jpg",
     choix : [
       {
@@ -42,6 +42,7 @@
   }
 
   let player = {
+    id: 888,
     nourriture: 100,
     vie: 100,
     argent: 100,
@@ -52,8 +53,8 @@
   $: styleNourriture = `--value: ${player.nourriture}; --thickness: 2px`;
   $: styleVie = `--value: ${player.vie}; --thickness: 2px`;
   $: styleArgent = `--value: ${player.argent}; --thickness: 2px`;
-  $: bgImageBackground = `background-image: url("src/assets/${pnj.bgImg}");`;
-  $: bgImagePnj = `background-image: url("src/assets/${pnj.pngImg}");`;
+  $: bgImageBackground = `background-image: url("src/assets/background/${card.bgImg}");`;
+  $: bgImagePnj = `background-image: url("src/assets/pnj/${card.pngImg}");`;
 
   /*------------------------*/
   /*------- FONCTIONS ------*/
@@ -104,9 +105,11 @@
     //     pnj.choix = response.choix;
     // });
 
-    pnj.pnjName = "Ifrit 2";
-    pnj.description = "My name is mathis";
-    pnj.choix = [
+    card.pnjName = "Ifrit 2";
+    card.description = "My name is mathis";
+    card.pngImg = "farfan.png";
+    card.bgImg = "taverne.png";
+    card.choix = [
       {
         description: "choix 3",
         nourriture : 0,
@@ -178,8 +181,8 @@
         <div class="bg-cover bg-no-repeat w-full h-full flex justify-center items-end" style={bgImagePnj}>
           <div class="card bg-stone-700 w-11/12 bg-opacity-80 -mb-6">
             <div class="card-body">
-              <h2 class="card-title text-white">{pnj.pnjName}</h2>
-              <p class="text-white">{pnj.description}</p>
+              <h2 class="card-title text-white">{card.pnjName}</h2>
+              <p class="text-white">{card.description}</p>
             </div>
           </div>
         </div>
@@ -189,7 +192,7 @@
     <!-- Choices -->
     <div class="bg-stone-800 flex items-center justify-center">
       <div class="w-full h-full grid grid-cols-1 content-center gap-5">
-        {#each pnj.choix as choice}
+        {#each card.choix as choice}
           <div on:click={next(choice)} class="btn text-black bg-orange-200 border-t-black text-center">
             {choice.description}
           </div>
