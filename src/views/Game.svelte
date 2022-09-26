@@ -159,7 +159,7 @@
       <div class="grid grid-cols-3 items-end w-screen">
         <div class="flex justify-center">
           {#if player.nourriture >= 70}
-            <div class="radial-progress text-center text-xs text-green-500" style="{styleNourriture}"><DrumstickIcon size="32"/></div>
+            <div class="radial-progress text-center text-xs text-orange-200" style="{styleNourriture}"><DrumstickIcon size="32"/></div>
           {:else if player.nourriture > 30}
             <div class="radial-progress text-center text-xs text-orange-500" style="{styleNourriture}"><DrumstickIcon size="32"/></div>
           {:else}
@@ -168,7 +168,7 @@
         </div>
         <div class="flex justify-center">
           {#if player.vie >= 70}
-            <div class="radial-progress text-center text-xs text-green-500" style="{styleVie}"><HeartIcon size="32"/></div>
+            <div class="radial-progress text-center text-xs text-orange-200" style="{styleVie}"><HeartIcon size="32"/></div>
           {:else if player.vie > 30}
             <div class="radial-progress text-center text-xs text-orange-500" style="{styleVie}"><HeartIcon size="32"/></div>
           {:else}
@@ -177,7 +177,7 @@
         </div>
         <div class="flex justify-center">
           {#if player.argent >= 70}
-            <div class="radial-progress text-center text-xs text-green-500" style="{styleArgent}"><DollarIcon size="32"/></div>
+            <div class="radial-progress text-center text-xs text-orange-200" style="{styleArgent}"><DollarIcon size="32"/></div>
           {:else if player.argent > 30}
             <div class="radial-progress text-center text-xs text-orange-500" style="{styleArgent}"><DollarIcon size="32"/></div>
           {:else}
