@@ -1,7 +1,14 @@
 <script>
     import { Link } from "svelte-navigator";
+    import { userId } from "../store";
 
-    const src = "src/assets/frame_open.png";
+    let id;
+    userId.subscribe(value => {
+      id = value;
+    });
+    
+    let msg = (id == -1) ? "Jouer" : "Continuer";
+    
 </script>
 
 <div class="hero min-h-screen bg-stone-800">
@@ -10,7 +17,7 @@
         <h1 class="mb-5 text-orange-200 text-5xl font-bold py-6">OwnWay</h1>
         <nav>
           <Link to="/game">
-            <button class="bg-orange-200 btn bnt-primary">Play</button>
+            <button class="bg-orange-200 btn bnt-primary">{ msg }</button>
           </Link>
         </nav>
       </div>

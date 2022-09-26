@@ -3,51 +3,70 @@
   import Range from "../components/Range.svelte";
   import DataService from '../services/DataService';
   import { useNavigate } from "svelte-navigator";
-  import { DrumstickIcon, HeartIcon, DollarIcon } from 'svelte-uicons'
+  import { DrumstickIcon, HeartIcon, DollarIcon } from 'svelte-uicons';
+  import { userId } from "../store";
 
   /*------------------------*/
   /*------ CONSTANTES ------*/
   /*------------------------*/
 
   const navigate = useNavigate();
+  let card = {};
+  let player = {};
+  let id;
 
-  let card = {
-    pnjName: "Ifrit",
-    description: "Hey ! you're finally awake ?",
-    pngImg: "oldrym.png",
-    bgImg: "forest.jpg",
-    choix : [
-      {
-        description: "choix 1",
-        nourriture : 0,
-        vie : 0,
-        argent : -20,
-        neutrality : -50
-      },
-      {
-        description: "choix 2",
-        nourriture : 0,
-        vie : 0,
-        argent : 10,
-        neutrality : 0
-      },
-      {
-        description: "choix 3",
-        nourriture : -80,
-        vie : 0,
-        argent : 0,
-        neutrality : 0
-      }
-    ],
-  }
+  userId.subscribe(value => {
+    id = value;
+  });
 
-  let player = {
-    id: 888,
-    nourriture: 100,
-    vie: 100,
-    argent: 100,
-    neutrality: 50,
-    step: 0
+  if(id != -1){
+    DataService.postConnection(id).then((response) =>{
+      console.log(response);
+      card = response.card;
+      player = response.player;
+    });
+  }else{
+    DataService.getConnection().then((response) =>{
+      console.log(response);
+      userId.set(response.id);
+    });
+    card = {
+      pnjName: "Ifrit",
+      description: "Hey ! you're finally awake ?",
+      pngImg: "oldrym.png",
+      bgImg: "forest.jpg",
+      choix : [
+        {
+          description: "choix 1",
+          nourriture : 0,
+          vie : 0,
+          argent : -20,
+          neutrality : -50
+        },
+        {
+          description: "choix 2",
+          nourriture : 0,
+          vie : 0,
+          argent : 10,
+          neutrality : 0
+        },
+        {
+          description: "choix 3",
+          nourriture : -80,
+          vie : 0,
+          argent : 0,
+          neutrality : 0
+        }
+      ],
+    };
+
+    player = {
+      nourriture: 100,
+      vie: 100,
+      argent: 100,
+      neutrality: 50,
+      step: 0
+    };
   }
  
   $: styleNourriture = `--value: ${player.nourriture}; --thickness: 2px`;
@@ -96,14 +115,10 @@
 
     checkPlayerStat();
 
-    // DataService.postNext(player).then((response) =>{
-    //     console.log(response);
-    //     pnj.pnjName = response.pnjName;
-    //     pnj.description = response.description;
-    //     pnj.pngImg = response.pngImg;
-    //     pnj.bgImg = response.bgImg;
-    //     pnj.choix = response.choix;
-    // });
+    DataService.postNext(player,choice.description).then((response) =>{
+        console.log(response);
+        card = response;
+    });
 
     card.pnjName = "Ifrit 2";
     card.description = "My name is mathis";
