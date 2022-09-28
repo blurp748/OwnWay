@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+  ownway-backend:
+    build:
+      context: ./API_Info701
+      dockerfile: Dockerfile
+    container_name: "ownway-backend"
+    ports:
+      - "3000:3000"
+    restart: "unless-stopped"
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_DATABASE: ownwayDB
+      MONGO_INITDB_ROOT_USERNAME: ${USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${PASSWORD}
+    ports:
+      - "27017:27017"
+    volumes:
+      - db_data:/data/db
+
+volumes:
+  db_data:
+    external: true
