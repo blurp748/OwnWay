@@ -3,7 +3,7 @@ services:
 
   ownway-backend:
     build:
-      context: ./API_Info701
+      context: ./back-node
       dockerfile: Dockerfile
     container_name: "ownway-backend"
     ports:
