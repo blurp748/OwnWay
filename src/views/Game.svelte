@@ -115,7 +115,7 @@
 
     checkPlayerStat();
 
-    DataService.postNext(player,choice.description).then((response) =>{
+    DataService.postNext(player,choice.description,id).then((response) =>{
         console.log(response);
         card = response;
     });

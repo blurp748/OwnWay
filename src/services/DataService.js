@@ -4,8 +4,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 class DataService {
 
-	postNext(player,choice) {
+	postNext(player,choice,userId) {
 		return axios.post(API_URL + "/next", {
+            userId: userId,
             nourriture: player.nourriture,
             vie: player.vie,
             argent: player.argent,
