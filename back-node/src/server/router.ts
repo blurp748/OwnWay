@@ -1,11 +1,11 @@
 import express from "express";
-import { Player } from "~/database/player/player";
+import { db } from "~/database/schemas"
 
 const router = express.Router();
 
 router.route("/")
     .get(async (req, res) => {
-        await Player.create({
+        const newPlayer = await db.player.create({
             game: {
                 nourriture: 100,
                 vie: 100,
