@@ -9,48 +9,38 @@ function readJson(pathFile: string) {
     return JSON.parse(file);
 }
 
-function getRndInteger(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
 var express = require("express");
 var app = express();
 
-app.use(express.json());
 app.use(cors());
 
+// parse requests of content-type - application/json
+app.use(express.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+//Setting up database
+const db = require("../database/model");
+db.mongoose
+  .connect(db.url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Connected to the database!");
+  })
+  .catch((err: any) => {
+    console.log("Cannot connect to the database!", err);
+    process.exit();
+  });
+
+// Home route
 app.get("/", (req: any, res: any) => {
-    // Renvoie un nouvel id pour le joueur => C'est un nouveau joueur
-    res.send(readJson(`${RESOURCES_PATH}json/1.json`));
-
+    res.json({ message: "Welcome to Kylian/Mathis API." });
 });
-
-app.post("/", (req: any, res: any) => {
-    // Renvoie la progression du joueur => Carte + Statistiques
-    const idPlayer = req.body.id;
-    console.log("idPlayer = ");
-    console.log(idPlayer);
-    if (idPlayer != undefined) {
-        res.send(readJson(`${RESOURCES_PATH}json/1.json`));
-    } else {
-        var json = JSON.parse("{}");
-        json.error = "Rien n'a été envoyé! Comment suis-je censé répondre?";
-        res.send(json);
-    }
-});
-
-app.post("/next", (req: any, res: any) => { 
-    // Renvoie la prochaine carte et sauvegarde la progression du joueur
-    const player = req.body.player;
-    console.log("player = ");
-    console.log(player);
-    if (player != undefined) {
-        res.send(readJson(`${RESOURCES_PATH}json/2.json`));
-    } else {
-        var json = JSON.parse("{}");
-        json.error = "Rien n'a été envoyé! Comment suis-je censé répondre?";
-        res.send(json);
-    }
-});
+  
+//Setting up routes
+require("../database/routes/routes")(app);
 
 app.listen(3000, () => { console.log("Server running on port 3000"); });
