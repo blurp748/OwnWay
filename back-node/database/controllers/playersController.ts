@@ -1,9 +1,10 @@
-const db = require("../model");
+import db from "../model";
 const Player = db.player;
 
 exports.findPlayer = (req: any, res: any) => {
 
-    const id = req.player_id;
+    const id = req.body.player_id;
+    console.log("id : " + id);
 
     Player.findById(id)
       .then((data: any) => {

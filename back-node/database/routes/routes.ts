@@ -5,11 +5,14 @@ module.exports = (app: any) => {
     // ----------------------------------------------------
 
     const players = require("../controllers/playersController.ts");
+    const cards = require("../controllers/cardsController.ts");
     const playerRouter = require("express").Router();
 
     // Retrieve a Player
-    playerRouter.get("/", players.findPlayer);
+    playerRouter.post("/", players.findPlayer);
 
+    // Choose the next card
+    playerRouter.post("/next", cards.nextCard);
 
     // -------------------------------//
 
