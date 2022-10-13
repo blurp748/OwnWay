@@ -8,6 +8,9 @@ module.exports = (app: any) => {
     const cards = require("../controllers/cardsController.ts");
     const playerRouter = require("express").Router();
 
+    // Create a new Player
+    playerRouter.get("/", players.createPlayer);
+
     // Retrieve a Player
     playerRouter.post("/", players.findPlayer);
 

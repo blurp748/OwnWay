@@ -7,25 +7,6 @@ function toJSON(this: any) {
 }
 
 // ----------------------------------------------------
-// ---------------------- Player ----------------------
-// ----------------------------------------------------
-
-const playerSchema = new mongoose.Schema(
-    {
-        nourriture: { type: Number, min: 0, max: 100 },
-        vie: { type: Number, min: 0, max: 100 },
-        argent: { type: Number, min: 0, max: 100 },
-        neutrality: { type: Number, min: 0, max: 100 },
-        step: { type: Number },
-    },
-    { timestamps: true }
-);
-
-playerSchema.method("toJSON", toJSON);
-
-const Player = mongoose.model("player", playerSchema);
-
-// ----------------------------------------------------
 // ---------------------- Carte -----------------------
 // ----------------------------------------------------
 
@@ -51,6 +32,27 @@ const cardSchema = new mongoose.Schema(
 cardSchema.method("toJSON", toJSON);
 
 const Card = mongoose.model("card", cardSchema);
+
+
+// ----------------------------------------------------
+// ---------------------- Player ----------------------
+// ----------------------------------------------------
+
+const playerSchema = new mongoose.Schema(
+    {
+        nourriture: { type: Number, min: 0, max: 100, required: true },
+        vie: { type: Number, min: 0, max: 100, required: true },
+        argent: { type: Number, min: 0, max: 100, required: true },
+        neutrality: { type: Number, min: 0, max: 100, required: true },
+        step: { type: Number, required: true },
+        card: { type: mongoose.Schema.Types.ObjectId, ref: "card"}
+    },
+    { timestamps: true }
+);
+
+playerSchema.method("toJSON", toJSON);
+
+const Player = mongoose.model("player", playerSchema);
 
 // Initialisation Database
 const db = {
