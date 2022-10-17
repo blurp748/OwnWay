@@ -12,6 +12,7 @@
 
   const navigate = useNavigate();
   let card = {};
+  card.choices = []; // in order to disable #each error on template 
   let player = {};
   let id;
 
@@ -20,45 +21,20 @@
   });
 
   if(id != -1){
+    console.log("postConnection")
     DataService.postConnection(id).then((response) =>{
       console.log(response);
-      card = response.card;
-      player = response.player;
+      card = response.data.card;
+      player = response.data.player;
     });
   }else{
+    console.log("getConnection")
     DataService.getConnection().then((response) =>{
-      console.log(response);
-      userId.set(response.id);
+      console.log(response)
+      userId.set(response.data.id)
+      card = response.data.card
+      console.log(card.choices[0].description)
     });
-    card = {
-      pnjName: "Ifrit",
-      description: "Hey ! you're finally awake ?",
-      pngImg: "oldrym.png",
-      bgImg: "forest.jpg",
-      choix : [
-        {
-          description: "choix 1",
-          nourriture : 0,
-          vie : 0,
-          argent : -20,
-          neutrality : -50
-        },
-        {
-          description: "choix 2",
-          nourriture : 0,
-          vie : 0,
-          argent : 10,
-          neutrality : 0
-        },
-        {
-          description: "choix 3",
-          nourriture : -80,
-          vie : 0,
-          argent : 0,
-          neutrality : 0
-        }
-      ],
-    };
 
     player = {
       nourriture: 100,
@@ -72,8 +48,8 @@
   $: styleNourriture = `--value: ${player.nourriture}; --thickness: 2px`;
   $: styleVie = `--value: ${player.vie}; --thickness: 2px`;
   $: styleArgent = `--value: ${player.argent}; --thickness: 2px`;
-  $: bgImageBackground = `background-image: url("src/assets/background/${card.bgImg}");`;
-  $: bgImagePnj = `background-image: url("src/assets/pnj/${card.pngImg}");`;
+  $: bgImageBackground = `background-image: url("src/assets/background/${card.bgImage}.png");`;
+  $: bgImagePnj = `background-image: url("src/assets/pnj/${card.pnjImage}.png");`;
 
   /*------------------------*/
   /*------- FONCTIONS ------*/
@@ -117,14 +93,13 @@
 
     DataService.postNext(player,choice.description,id).then((response) =>{
         console.log(response);
-        card = response;
     });
 
     card.pnjName = "Ifrit 2";
     card.description = "My name is mathis";
-    card.pngImg = "farfan.png";
-    card.bgImg = "taverne.png";
-    card.choix = [
+    card.pnjImage = "farfan";
+    card.bgImage = "taverne";
+    card.choices = [
       {
         description: "choix 3",
         nourriture : 0,
@@ -207,7 +182,7 @@
     <!-- Choices -->
     <div class="bg-stone-800 flex items-center justify-center">
       <div class="w-full h-full grid grid-cols-1 content-center gap-5">
-        {#each card.choix as choice}
+        {#each card.choices as choice, i}
           <div on:click={next(choice)} class="btn text-black bg-orange-200 border-t-black text-center">
             {choice.description}
           </div>
