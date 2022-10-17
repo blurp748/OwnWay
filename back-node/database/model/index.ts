@@ -47,7 +47,6 @@ const cardSchema = new mongoose.Schema(
                     min: {type: Number, default: 1},
                     max: {type: Number}
                 }
-
             }
         ]
     },

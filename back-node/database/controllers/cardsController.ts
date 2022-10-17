@@ -9,22 +9,31 @@ exports.nextCard = (req: any, res: any) => {
 
 exports.findFirstCard = () => {
   return new Promise((resolve, reject) => {
-    Card.find({ dependances: { step: { min: 0, max: 0 } } }).then((card) => {
-      console.log("Find first => ");
-      console.log(card);
-      if (card.length == 0) {
+    Card.find().then((cards_founded) => {
+      if (cards_founded.length == 0) {
         console.log("No card found => create a new one");
         createFirst().then((card) => {
-          console.log("Card created => "); console.log(card);
           resolve(card);
-        }
-        ).catch((err) => {
+        }).catch((err) => {
           reject(err);
         });
       } else {
-        console.log("Card found => "); console.log(card);
-        const returnCard = new Card(card);
-        console.log("returnCard => "); console.log(returnCard);
+        var card_found : any = undefined;
+        cards_founded.forEach(card => {
+          if (card_found == undefined) {
+            // condition : card.dependances[0].step.max = 0
+            const dependances = card.dependances[0];
+            if (dependances != undefined) {
+              const step = dependances.step;
+              if (step != undefined) {
+                if (step.max == 0) {
+                  card_found = card;
+                }
+              }
+            }
+          }
+        });
+        const returnCard = new Card(card_found);
         resolve(returnCard);
       }
     }).catch((err) => {
@@ -36,7 +45,6 @@ exports.findFirstCard = () => {
 exports.findCardWithId = (id: String) => {
   return new Promise((resolve, reject) => {
     Card.findById(id).then((card) => {
-      console.log("Find card with id => "); console.log(card);
       resolve(card);
     }).catch((err) => {
       console.log("Error while find card with id => " + err);
@@ -59,17 +67,17 @@ async function createFirst() {
     pnjName: "oldrym",
     pnjImage: "oldrym",
     bgImage: "forest",
-    description: "Hey ! You finally awaike ?",
+    description: "Hey ! You finally awake ?",
     choices: [
       { description: "Yes, but who are you ?" },
-      { description: "No ! I'm alwais on the moon" },
-      { description: "Yes, I'm awaike. But who are you, and where I am ?" }
+      { description: "No ! I'm always on the moon" },
+      { description: "Yes, I'm awake. But who are you, and where I am ?" }
     ],
     dependances: [{ step: { min: 0, max: 0 } }]
   });
   return new Promise((resolve, reject) => {
     card.save()
-      .then((card) => { console.log("New card = " + card); resolve(card) })
-      .catch((err) => { console.log("Erreur lors de la création de la première carte => " + err); reject(err); });
+      .then((card) => { resolve(card) })
+      .catch((err) => { reject(err); });
   });
 }

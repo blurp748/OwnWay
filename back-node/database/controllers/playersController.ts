@@ -5,7 +5,6 @@ const Player = db.player;
 exports.findPlayer = (req: any, res: any) => {
 
   const id = req.body.player_id;
-  console.log("id : " + id);
 
   Player.findById(id)
     .then((data: any) => {
@@ -13,8 +12,6 @@ exports.findPlayer = (req: any, res: any) => {
         res.status(404).send({ message: "Not found Player with id " + id });
       else {
         //ici tu renvoie card + player
-        console.log("Player found => " + data);
-        console.log("Player.card => " + data.card);
         cards.findCardWithId(data.card).then((cardFind: any) => {
           data.card = cardFind;
           res.send(data);
@@ -32,9 +29,7 @@ exports.findPlayer = (req: any, res: any) => {
 };
 
 exports.createPlayer = (req: any, res: any) => {
-  console.log("TOCHECK : create a new player");
   cards.findFirstCard().then((cardFind: any) => {
-    console.log("createPlayer => cardFind => " + cardFind);
     var player = new Player({
       nourriture: 100,
       vie: 100,
@@ -43,14 +38,10 @@ exports.createPlayer = (req: any, res: any) => {
       step: 0,
       card: cardFind
     });
-    console.log("New player => " + player);
-    console.log("New player.card => " + player.card);
     player.save()
       .then((playerCreated: any) => {
-        console.log("Player created => " + playerCreated);
         res.send(playerCreated);
       }).catch((err: any) => {
-        console.log("Erreur lors de la sauvegarde => " + err);
         res.status(500).send({
           message: err.message || "Some error occurred while creating the Player."
         });

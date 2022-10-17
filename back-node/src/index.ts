@@ -1,5 +1,4 @@
 import cors from "cors";
-const RESOURCES_PATH = './resources/';
 const db = require("../database/model");
 
 var express = require("express");
