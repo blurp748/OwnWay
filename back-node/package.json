@@ -4,7 +4,7 @@
   "description": "API du Projet d'info701 - Serveur qui renvoie des évènements en fonction du chemin fait par l'utilisatuer",
   "main": "index.ts",
   "scripts": {
-    "dev": "nodemon --watch src -e js,ts,json --exec \"ts-node src/index.ts\"",
+    "dev": "nodemon --watch database --watch src -e js,ts,json --exec \"ts-node src/index.ts\"",
     "build": "tsup src/index.ts --format cjs --clean",
     "start": "ts-node src/index.ts"
   },

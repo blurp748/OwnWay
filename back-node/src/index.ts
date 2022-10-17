@@ -1,13 +1,6 @@
 import cors from "cors";
-import fs, { cp } from "fs";
-import * as path from 'path';
 const RESOURCES_PATH = './resources/';
-
-function readJson(pathFile: string) {
-    const encoding = 'utf8';
-    var file = fs.readFileSync(path.join(__dirname, pathFile), encoding);
-    return JSON.parse(file);
-}
+const db = require("../database/model");
 
 var express = require("express");
 var app = express();
@@ -21,7 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Setting up database
-const db = require("../database/model");
 db.mongoose
   .connect(db.url, {
     useNewUrlParser: true,
@@ -31,7 +23,8 @@ db.mongoose
     console.log("Connected to the database!");
   })
   .catch((err: any) => {
-    console.log("Cannot connect to the database!", err);
+    console.log("Cannot connect to the database!\n", err);
+    //console.log(err.reason.servers);
     process.exit();
   });
 

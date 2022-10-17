@@ -1,22 +1,93 @@
-const db = require("../model");
+import db from "../model";
+const cards = require("./cardsController.ts");
 const Player = db.player;
 
 exports.findPlayer = (req: any, res: any) => {
 
-    const id = req.player_id;
+  const id = req.body.player_id;
+  console.log("id : " + id);
 
-    Player.findById(id)
-      .then((data: any) => {
-        if (!data)
-          res.status(404).send({ message: "Not found Player with id " + id });
-        else {
-            //ici tu renvoie card + player
-            res.send(data);
-        }
-      })
-      .catch(() => {
-        res
-          .status(500)
-          .send({ message: "Error retrieving Player with id=" + id });
+  Player.findById(id)
+    .then((data: any) => {
+      if (!data)
+        res.status(404).send({ message: "Not found Player with id " + id });
+      else {
+        //ici tu renvoie card + player
+        console.log("Player found => " + data);
+        console.log("Player.card => " + data.card);
+        cards.findCardWithId(data.card).then((cardFind: any) => {
+          data.card = cardFind;
+          res.send(data);
+        }).catch((err: any) => {
+          console.log("Error while find card with id => " + err);
+          res.status(500).send({ message: "Error while find card with id => " + err });
+        });
+      }
+    })
+    .catch(() => {
+      res
+        .status(500)
+        .send({ message: "Error retrieving Player with id=" + id });
+    });
+};
+
+exports.createPlayer = (req: any, res: any) => {
+  console.log("TOCHECK : create a new player");
+  cards.findFirstCard().then((cardFind: any) => {
+    console.log("createPlayer => cardFind => " + cardFind);
+    var player = new Player({
+      nourriture: 100,
+      vie: 100,
+      argent: 100,
+      neutrality: 100,
+      step: 0,
+      card: cardFind
+    });
+    console.log("New player => " + player);
+    console.log("New player.card => " + player.card);
+    player.save()
+      .then((playerCreated: any) => {
+        console.log("Player created => " + playerCreated);
+        res.send(playerCreated);
+      }).catch((err: any) => {
+        console.log("Erreur lors de la sauvegarde => " + err);
+        res.status(500).send({
+          message: err.message || "Some error occurred while creating the Player."
+        });
       });
+  }).catch((err: any) => {
+    console.log("Create Player error => " + err);
+    res
+      .setStatus(500)
+      .send({ message: "Erreur lors de la création du player : " + err });
+  })
+};
+
+exports.savePlayer = (player: any, newCard: any) => {
+  Player.findByIdAndUpdate(player._id, {
+    nourriture: player.nourriture,
+    vie: player.vie,
+    argent: player.argent,
+    neutrality: player.neutrality,
+    step: player.step,
+    card: newCard
+  }, { new: true })
+    .then((data: any) => {
+      if (!data) {
+        console.log("Not found Player with id " + player._id);
+      } else {
+        console.log("Player updated successfully.");
+      }
+    }).catch((err: any) => {
+      console.log("Error updating Player with id=" + player._id);
+    });
+};
+
+exports.getAllPlayer = (req: any, res: any) => {
+  Player.find()
+    .then((data) => {
+      res.send(data);
+    }).catch((err) => {
+      console.log("error lors de la récupération des players => " + err);
+    });
 };
