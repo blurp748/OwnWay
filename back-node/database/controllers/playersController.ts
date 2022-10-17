@@ -12,12 +12,21 @@ exports.findPlayer = (req: any, res: any) => {
       if (!data)
         res.status(404).send({ message: "Not found Player with id " + id });
       else {
-        //ici tu renvoie card + player
-        console.log("Player found => " + data);
-        console.log("Player.card => " + data.card);
+        
+        const player = {
+          nourriture: data.nourriture,
+          vie: data.vie,
+          argent: data.argent,
+          neutrality: data.neutrality,
+          step: data.step,
+        }
+
         cards.findCardWithId(data.card).then((cardFind: any) => {
-          data.card = cardFind;
-          res.send(data);
+          let dataToSend = {
+            player : player,
+            card: cardFind
+          }
+          res.send(dataToSend);
         }).catch((err: any) => {
           console.log("Error while find card with id => " + err);
           res.status(500).send({ message: "Error while find card with id => " + err });

@@ -82,7 +82,7 @@ const Player = mongoose.model("player", playerSchema);
 // Initialisation Database
 const db = {
     mongoose: mongoose,
-    url: "mongodb://172.17.0.3:27017/API_Info701",
+    url: "mongodb://localhost:27017/API_Info701",
     player: Player,
     card: Card
 };
