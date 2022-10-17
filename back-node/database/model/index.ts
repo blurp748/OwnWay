@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+require("dotenv").config();
 
 function toJSON(this: any) {
     const { __v, _id, ...object } = this.toObject();
@@ -81,7 +82,7 @@ const Player = mongoose.model("player", playerSchema);
 // Initialisation Database
 const db = {
     mongoose: mongoose,
-    url: "mongodb://localhost:27017/API_Info701",
+    url: process.env.MONGODB_URI,
     player: Player,
     card: Card
 };
