@@ -19,10 +19,35 @@ const cardSchema = new mongoose.Schema(
         choices: [
             {
                 description: { type: String, required: true },
-                nourriture: { type: Number, min: 0, max: 100 },
-                vie: { type: Number, min: 0, max: 100 },
-                argent: { type: Number, min: 0, max: 100 },
-                neutrality: { type: Number, min: 0, max: 100 }
+                nourriture: { type: Number, min: 0, max: 100, default: 0 },
+                vie: { type: Number, min: 0, max: 100, default: 0 },
+                argent: { type: Number, min: 0, max: 100, default: 0 },
+                neutrality: { type: Number, min: 0, max: 100, default: 0 },
+            }
+        ],
+        dependances: [
+            {
+                nourriture: {
+                    min: {type: Number, default: 0},
+                    max: {type: Number, default: 100}
+                },
+                vie: {
+                    min: {type: Number, default: 0},
+                    max: {type: Number, default: 100},
+                },
+                argent: {
+                    min: {type: Number, default: 0},
+                    maw: {type: Number, default: 100}
+                },
+                neutrality: {
+                    min: {type: Number, default: 0},
+                    max: {type: Number, default: 100}
+                },
+                step: {
+                    min: {type: Number, default: 1},
+                    max: {type: Number}
+                }
+
             }
         ]
     },
@@ -45,7 +70,7 @@ const playerSchema = new mongoose.Schema(
         argent: { type: Number, min: 0, max: 100, required: true },
         neutrality: { type: Number, min: 0, max: 100, required: true },
         step: { type: Number, required: true },
-        card: { type: mongoose.Schema.Types.ObjectId, ref: "card"}
+        card: { type: mongoose.Schema.Types.ObjectId, ref: "card", required: true }
     },
     { timestamps: true }
 );

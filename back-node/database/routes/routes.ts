@@ -1,12 +1,22 @@
 module.exports = (app: any) => {
 
-    // ----------------------------------------------------
-    // --------------------- Players ---------------------
-    // ----------------------------------------------------
-
     const players = require("../controllers/playersController.ts");
     const cards = require("../controllers/cardsController.ts");
     const playerRouter = require("express").Router();
+    const adminRouter = require("express").Router();
+
+    // ----------------------------------------------------
+    // ---------------------- Admin -----------------------
+    // ----------------------------------------------------
+
+    adminRouter.get("/allPlayers", players.getAllPlayer);
+
+    adminRouter.get("/allCards", cards.getAllCards);
+
+
+    // ----------------------------------------------------
+    // --------------------- Players ----------------------
+    // ----------------------------------------------------
 
     // Create a new Player
     playerRouter.get("/", players.createPlayer);
@@ -21,4 +31,5 @@ module.exports = (app: any) => {
 
     //Set up routes for app
     app.use("/player", playerRouter);
+    app.use("/admin", adminRouter);
 };
