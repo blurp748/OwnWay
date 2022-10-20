@@ -3,7 +3,6 @@ const cards = require("./cardsController.ts");
 const Player = db.player;
 
 exports.findPlayer = (req: any, res: any) => {
-
   const id = req.body.player_id;
 
   Player.findById(id)
@@ -47,11 +46,23 @@ exports.createPlayer = (req: any, res: any) => {
       argent: 100,
       neutrality: 100,
       step: 0,
-      card: cardFind
+      card: cardFind,
+      playedCards : [cardFind]
     });
     player.save()
       .then((playerCreated: any) => {
-        res.send(playerCreated);
+        var dataToSend = {
+          player: {
+            nourriture: playerCreated.nourriture,
+            vie: playerCreated.vie,
+            argent: playerCreated.argent,
+            neutrality: playerCreated.neutrality,
+            step: playerCreated.step,
+            player_id: playerCreated.id
+          },
+          card: cardFind
+        };
+        res.send(dataToSend);
       }).catch((err: any) => {
         res.status(500).send({
           message: err.message || "Some error occurred while creating the Player."

@@ -70,7 +70,8 @@ const playerSchema = new mongoose.Schema(
         argent: { type: Number, min: 0, max: 100, required: true },
         neutrality: { type: Number, min: 0, max: 100, required: true },
         step: { type: Number, required: true },
-        card: { type: mongoose.Schema.Types.ObjectId, ref: "card", required: true }
+        card: { type: mongoose.Schema.Types.ObjectId, ref: "card", required: true },
+        playedCards: [{ type: mongoose.Schema.Types.ObjectId, ref: "card" }]
     },
     { timestamps: true }
 );
