@@ -16,7 +16,7 @@
   card.choices = []; // in order to disable #each error on template 
   card.bgImage = ``;
   card.pnjImage = ``;
-  
+
   let player = {};
   let id;
 
@@ -26,11 +26,13 @@
 
   if(id != -1){
     DataService.postConnection(id).then((response) =>{
+      console.log(response.data)
       card = response.data.card;
       player = response.data.player;
     });
   }else{
     DataService.getConnection().then((response) =>{
+      console.log(response.data)
       userId.set(response.data.id)
       card = response.data.card
     });
@@ -59,19 +61,19 @@
     if(player.nourriture > 100){
       player.nourriture = 100;
     }else if(player.nourriture <= 0){
-      navigate('/')
+      lose()
     }
 
     if(player.vie > 100){
       player.vie = 100;
     }else if(player.vie <= 0){
-      navigate('/')
+      lose()
     }
 
     if(player.argent > 100){
       player.argent = 100;
     }else if(player.argent <= 0){
-      navigate('/')
+      lose()
     }
 
     if(player.neutrality > 100) player.neutrality = 100;
@@ -79,16 +81,26 @@
 
   }
 
-  function next(choice){
+  function lose(){
+      DataService.deletePlayer(id).then((response) =>{
+          console.log(response.data)
+          userId.set(-1)
+          navigate('/')
+      });
+  }
+
+  function next(choice,nb){
     
+    console.log(player);
     player.nourriture += choice.nourriture;
     player.vie += choice.vie;
     player.argent += choice.argent;
     player.neutrality += choice.neutrality;
+    console.log(player);
 
     checkPlayerStat();
 
-    DataService.postNext(player,choice.description,id).then((response) =>{
+    DataService.postNext(player,nb,id).then((response) =>{
         console.log(response);
     });
 
@@ -165,7 +177,7 @@
     <!-- Card -->
     <div class="bg-orange-200 row-span-5 flex items-center justify-center" >
       <div class="bg-cover w-11/12 h-5/6" style={bgImageBackground}>
-        <div class="bg-cover bg-no-repeat w-full h-full flex justify-center items-end" style={bgImagePnj}>
+        <div class="bg-contain bg-no-repeat w-full h-full flex justify-center items-end bg-center" style={bgImagePnj}>
           <div class="card bg-stone-700 w-11/12 bg-opacity-80 -mb-6">
             <div class="card-body">
               <h2 class="card-title text-white">{card.pnjName}</h2>
@@ -179,8 +191,8 @@
     <!-- Choices -->
     <div class="bg-stone-800 flex items-center justify-center">
       <div class="w-full h-full grid grid-cols-1 content-center gap-5">
-        {#each card.choices as choice}
-          <div on:click={() => next(choice)} class="btn text-black bg-orange-200 border-t-black text-center">
+        {#each card.choices as choice,i}
+          <div on:click={() => next(choice,i)} class="btn text-black bg-orange-200 border-t-black text-center">
             {choice.description}
           </div>
         {/each}
