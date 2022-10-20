@@ -11,8 +11,12 @@
   /*------------------------*/
 
   const navigate = useNavigate();
+
   let card = {};
   card.choices = []; // in order to disable #each error on template 
+  card.bgImage = ``;
+  card.pnjImage = ``;
+  
   let player = {};
   let id;
 
@@ -21,19 +25,14 @@
   });
 
   if(id != -1){
-    console.log("postConnection")
     DataService.postConnection(id).then((response) =>{
-      console.log(response);
       card = response.data.card;
       player = response.data.player;
     });
   }else{
-    console.log("getConnection")
     DataService.getConnection().then((response) =>{
-      console.log(response)
       userId.set(response.data.id)
       card = response.data.card
-      console.log(card.choices[0].description)
     });
 
     player = {
@@ -82,12 +81,10 @@
 
   function next(choice){
     
-    console.log(player.argent);
     player.nourriture += choice.nourriture;
     player.vie += choice.vie;
     player.argent += choice.argent;
     player.neutrality += choice.neutrality;
-    console.log(player.argent);
 
     checkPlayerStat();
 
@@ -182,8 +179,8 @@
     <!-- Choices -->
     <div class="bg-stone-800 flex items-center justify-center">
       <div class="w-full h-full grid grid-cols-1 content-center gap-5">
-        {#each card.choices as choice, i}
-          <div on:click={next(choice)} class="btn text-black bg-orange-200 border-t-black text-center">
+        {#each card.choices as choice}
+          <div on:click={() => next(choice)} class="btn text-black bg-orange-200 border-t-black text-center">
             {choice.description}
           </div>
         {/each}
