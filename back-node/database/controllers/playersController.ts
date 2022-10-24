@@ -6,20 +6,22 @@ exports.findPlayer = (req: any, res: any) => {
   const id = req.body.player_id;
 
   Player.findById(id)
-    .then((data: any) => {
-      if (!data)
-        res.status(404).send({ message: "Not found Player with id " + id });
+    .then((playerDB: any) => {
+      if (!playerDB)
+        res.status(500).send({ message: "Not found Player with id " + id });
       else {
-        
+        //console.log("DEBUG => findPlayer => data send : " + playerDB);
+        //console.log("DEBUG => findPlayer => data.card  : " + playerDB.card);
+
         const player = {
-          nourriture: data.nourriture,
-          vie: data.vie,
-          argent: data.argent,
-          neutrality: data.neutrality,
-          step: data.step,
+          nourriture: playerDB.nourriture,
+          vie: playerDB.vie,
+          argent: playerDB.argent,
+          neutrality: playerDB.neutrality,
+          step: playerDB.step,
         }
 
-        cards.findCardWithId(data.card).then((cardFind: any) => {
+        cards.findCardWithId(playerDB.card._id).then((cardFind: any) => {
           let dataToSend = {
             player : player,
             card: cardFind
@@ -44,13 +46,15 @@ exports.createPlayer = (req: any, res: any) => {
       nourriture: 100,
       vie: 100,
       argent: 100,
-      neutrality: 100,
+      neutrality: 50,
       step: 0,
-      card: cardFind,
-      playedCards : [cardFind]
+      card: cardFind.id,
+      playedCards: []
     });
+    console.log("DEBUG => createPlayer => cardFind : "); console.log(cardFind);
     player.save()
       .then((playerCreated: any) => {
+        console.log("DEBUG => createPlayer => playerCreated : " + playerCreated);
         var dataToSend = {
           player: {
             nourriture: playerCreated.nourriture,

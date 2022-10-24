@@ -38,7 +38,7 @@ const cardSchema = new mongoose.Schema(
                 },
                 argent: {
                     min: {type: Number, default: 0},
-                    maw: {type: Number, default: 100}
+                    max: {type: Number, default: 100}
                 },
                 neutrality: {
                     min: {type: Number, default: 0},
@@ -70,8 +70,8 @@ const playerSchema = new mongoose.Schema(
         argent: { type: Number, min: 0, max: 100, required: true },
         neutrality: { type: Number, min: 0, max: 100, required: true },
         step: { type: Number, required: true },
-        card: { type: mongoose.Schema.Types.ObjectId, ref: "card", required: true },
-        playedCards: [{ type: mongoose.Schema.Types.ObjectId, ref: "card" }]
+        card: { type: mongoose.Types.ObjectId, ref: "Card", required: true },
+        playedCards: [cardSchema]
     },
     { timestamps: true }
 );
