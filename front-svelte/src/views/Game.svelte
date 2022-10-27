@@ -91,19 +91,17 @@
 
   function next(choice,nb){
     
-    console.log(player);
     player.nourriture += choice.nourriture;
     player.vie += choice.vie;
     player.argent += choice.argent;
     player.neutrality += choice.neutrality;
-    console.log(player);
+    player.step += 1;
 
     checkPlayerStat();
 
     DataService.postNext(player,nb,id).then((response) =>{
         console.log(response);
         card = response.data.card;
-        player = response.data.player;
     });
   }
 

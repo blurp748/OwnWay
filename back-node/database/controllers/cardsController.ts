@@ -18,34 +18,25 @@ exports.nextCard = async (req: any, res: any) => {
       ~- choice
   */
 
-  console.log("req.body : "); console.log(req.body);
+  //console.log("req.body : "); console.log(req.body);
   var player: any;
   player = await Player.findById(req.body.player_id);
   const choice = req.body.choice;
-  console.log("player found : " + player);
+  //console.log("player found : " + player);
 
   if (player != undefined) {
     const idCurrentCard = player.card;
-    console.log("card found from player: " + idCurrentCard);
+    //console.log("card found from player: " + idCurrentCard);
 
     if (idCurrentCard != undefined && idCurrentCard != null) {
       const playedCard = await Card.findById(idCurrentCard);
       if (playedCard != undefined && playedCard != null) {
-        // Modifier les stats du joueur en fonction de la réponse choisie
-        player.nourriture += playedCard.choices[choice].nourriture;
-        player.vie += playedCard.choices[choice].vie;
-        player.argent += playedCard.choices[choice].argent;
-        player.neutrality += playedCard.choices[choice].neutrality;
-        player.step += 1;
-
         const dependances = playedCard.dependances[0];
         if (dependances != undefined) {
           const stepDependance = dependances.step;
           if (stepDependance != undefined) {
             const step = player.step;
-            console.log("We're trying to find a card with step : ");
             // Trouver la carte suivante
-
             // Récupérer toutes les cartes disponibles selon le step actuel du joueur
 
             var cards = await Card.find();
@@ -64,10 +55,9 @@ exports.nextCard = async (req: any, res: any) => {
                   }
                 }
               };
-              console.log("cards found with step filter : " + cards);
+              //console.log("cards found with step filter : " + cards);
               if (cards.length > 0) {
                 player.card = cards;
-                player.step = player.step + 1;
                 // Supprimer les cartes que le joueur a déjà joué
 
                 for (let i = 0; i < cards.length; i++) {
@@ -80,12 +70,12 @@ exports.nextCard = async (req: any, res: any) => {
                   }
                 }
 
-                console.log("cards after already played filter : " + cards);
+                //console.log("cards after already played filter : " + cards);
 
                 // Supprimer les cartes qui ne sont pas disponibles selon la neutralité actuelle du joueur
                 for (let i = 0; i < cards.length; i++) {
                   const card = cards[i];
-                  console.log("card : "); console.log(card);
+                  //console.log("card : "); console.log(card);
                   const dependances = card.dependances[0];
                   if ((dependances != undefined && dependances.neutrality != undefined &&
                     (dependances.neutrality.min > player.neutrality || dependances.neutrality.max < player.neutrality))) {
@@ -93,14 +83,14 @@ exports.nextCard = async (req: any, res: any) => {
                   }
                 }
 
-                console.log("cards after neutrality filter : " + cards);
+                //console.log("cards after neutrality filter : " + cards);
 
                 // Random dans les cartes restantes
                 const randomCard = cards[Math.floor(Math.random() * cards.length)];
                 // Changement de carte
                 player.playedCards.push(player.card);
-                console.log("random card choose : " + randomCard);
-                console.log("player : " + player);
+                //console.log("random card choose : " + randomCard);
+                //console.log("player : " + player);
 
                 // Sauvegarde du joueur
                 const playerSaved = await playerController.savePlayer(player, randomCard);
@@ -108,7 +98,7 @@ exports.nextCard = async (req: any, res: any) => {
                   player: playerController.formatPlayer(playerSaved ? playerSaved : player),
                   card: formatCard(randomCard),
                 }
-                console.log("DEBUG => /next => dataToSend : "); console.log(dataToSend);
+                //console.log("DEBUG => /next => dataToSend : "); console.log(dataToSend);
                 res.send(dataToSend);
               } else if (cards.length == 0) {
                 console.log("No card found after step filter");
@@ -169,7 +159,7 @@ exports.findFirstCard = () => {
             }
           }
         });
-        console.log("card_found : " + card_found);
+        //console.log("card_found : " + card_found);
         if (card_found != undefined) {
           const returnCard = new Card(card_found);
           resolve(formatCard(returnCard));
@@ -188,10 +178,10 @@ exports.findFirstCard = () => {
 }
 
 exports.findCardWithId = (id: ObjectId) => {
-  console.log("DEBUG => findCardWithId => id : " + id);
+  //console.log("DEBUG => findCardWithId => id : " + id);
   return new Promise((resolve, reject) => {
     Card.findById(id).then((card) => {
-      console.log("DEBUG => findCardWithId => card : " + card);
+      //console.log("DEBUG => findCardWithId => card : " + card);
       resolve(formatCard(card));
     }).catch((err) => {
       console.log("Error while find card with id => " + err);
