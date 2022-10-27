@@ -1,5 +1,7 @@
-import mongoose, { ObjectId } from "mongoose";
+import console from "console";
+import { ObjectId } from "mongoose";
 import db from "../model";
+const playerController = require("./playersController.ts");
 const Card = db.card;
 const Player = db.player;
 
@@ -20,7 +22,6 @@ exports.nextCard = async (req: any, res: any) => {
   var player: any;
   player = await Player.findById(req.body.player_id);
   const choice = req.body.choice;
-
   console.log("player found : " + player);
 
   if (player != undefined) {
@@ -28,66 +29,98 @@ exports.nextCard = async (req: any, res: any) => {
     console.log("card found from player: " + idCurrentCard);
 
     if (idCurrentCard != undefined && idCurrentCard != null) {
-      Card.findById(idCurrentCard).then((card: any) => {
+      const playedCard = await Card.findById(idCurrentCard);
+      if (playedCard != undefined && playedCard != null) {
         // Modifier les stats du joueur en fonction de la réponse choisie
-        player.nourriture += card.choices[choice].nourriture;
-        player.vie += card.choices[choice].vie;
-        player.argent += card.choices[choice].argent;
-        player.neutrality += card.choices[choice].neutrality;
+        player.nourriture += playedCard.choices[choice].nourriture;
+        player.vie += playedCard.choices[choice].vie;
+        player.argent += playedCard.choices[choice].argent;
+        player.neutrality += playedCard.choices[choice].neutrality;
+        player.step += 1;
 
-        const dependances = card.dependances[0];
+        const dependances = playedCard.dependances[0];
         if (dependances != undefined) {
           const stepDependance = dependances.step;
           if (stepDependance != undefined) {
-            const stepMin = stepDependance.min;
-            const stepMax = stepDependance.max;
-            console.log("We're trying to find a card with step min : " + stepMin + " and step max : " + stepMax);
+            const step = player.step;
+            console.log("We're trying to find a card with step : ");
             // Trouver la carte suivante
 
             // Récupérer toutes les cartes disponibles selon le step actuel du joueur
 
-            Card.find({ "dependances.step.min": { $gt: stepMin }, "dependances.step.max": { $lte: stepMax } })
-              .then((cards: any) => {
-                console.log("cards found with step filter : " + cards);
-                if (cards.length > 0) {
-                  player.card = cards;
-                  player.step = player.step + 1;
-                  // Supprimer les cartes que le joueur a déjà joué
-
-                  for (var playedCard in player.playedCards) {
-                    cards.remove(playedCard);
-                  }
-
-                  console.log("cards after already played filter : " + cards);
-
-                  // Supprimer les cartes qui ne sont pas disponibles selon la neutralité actuelle du joueur
-                  cards.forEach((card: any) => {
-                    if (card.neutrality.min > player.neutrality || card.neutrality.max < player.neutrality) {
-                      cards.remove(card);
+            var cards = await Card.find();
+            if (cards != undefined && cards != null) {
+              for (let i = 0; i < cards.length; i++) {
+                const card = cards[i];
+                const dependances = card.dependances[0];
+                if (dependances != undefined) {
+                  const stepDependance = dependances.step;
+                  if (stepDependance != undefined) {
+                    if (stepDependance.min > step ||
+                      (stepDependance.max != undefined && stepDependance.max != null
+                        && stepDependance.max < step)) {
+                      cards.splice(i, 1);
                     }
-                  });
-
-                  console.log("cards after neutrality filter : " + cards);
-
-                  // Random dans les cartes restantes
-
-                  // Changement de carte
-                  // TODO : stocker la carte courante dans la liste des cartes parcourues par le joueur
-
-                  console.log("TODO : choose the nextCard");
-                  res.send("TODO : choose the nextCard");
-                } else if (cards.length == 0) {
-                  console.log("No card found after step filter");
-                  res.send("No card found! You win (or we had an error ^^') !");
-                } else {
-                  console.log("Error while finding next with dependances ! cards.length < 0 !");
-                  res.status(500).send({ message: "Error while find next with dependances ! => ERROR card.lengh < 0 !" })
+                  }
                 }
-              })
-              .catch((err: any) => {
-                console.log("Error while find cards with step => " + err);
-                res.status(500).send({ message: "Error while find cards with step => " + err });
-              });
+              };
+              console.log("cards found with step filter : " + cards);
+              if (cards.length > 0) {
+                player.card = cards;
+                player.step = player.step + 1;
+                // Supprimer les cartes que le joueur a déjà joué
+
+                for (let i = 0; i < cards.length; i++) {
+                  const card = cards[i];
+                  for (let j = 0; j < player.playedCards.length; j++) {
+                    const cardPlayed = player.playedCards[j];
+                    if (card._id == cardPlayed) {
+                      cards.splice(i, 1);
+                    }
+                  }
+                }
+
+                console.log("cards after already played filter : " + cards);
+
+                // Supprimer les cartes qui ne sont pas disponibles selon la neutralité actuelle du joueur
+                for (let i = 0; i < cards.length; i++) {
+                  const card = cards[i];
+                  console.log("card : "); console.log(card);
+                  const dependances = card.dependances[0];
+                  if ((dependances != undefined && dependances.neutrality != undefined &&
+                    (dependances.neutrality.min > player.neutrality || dependances.neutrality.max < player.neutrality))) {
+                    cards.splice(i, 1);
+                  }
+                }
+
+                console.log("cards after neutrality filter : " + cards);
+
+                // Random dans les cartes restantes
+                const randomCard = cards[Math.floor(Math.random() * cards.length)];
+                // Changement de carte
+                player.playedCards.push(player.card);
+                //console.log("random card choose : " + randomCard);
+                //console.log("player : " + player);
+
+                // Sauvegarde du joueur
+                const playerSaved = await playerController.savePlayer(player, randomCard);
+                const dataToSend = {
+                  player: playerController.formatPlayer(playerSaved ? playerSaved : player),
+                  card: formatCard(randomCard),
+                }
+                //console.log("DEBUG => /next => dataToSend : "); console.log(dataToSend);
+                res.send(dataToSend);
+              } else if (cards.length == 0) {
+                console.log("No card found after step filter");
+                res.send("No card found! You win (or we had an error ^^') !");
+              } else {
+                console.log("Error while finding next with dependances ! cards.length < 0 !");
+                res.status(500).send({ message: "Error while find next with dependances ! => ERROR card.lengh < 0 !" })
+              }
+            } else {
+              console.log("Error while find cards => " + cards);
+              res.status(500).send({ message: "Error while find cards => " + cards });
+            }
           } else {
             console.log("Error while find next => No step's dependances found !");
             res.status(500).send({ message: "Error while find next => No step's dependances found !" });
@@ -96,10 +129,10 @@ exports.nextCard = async (req: any, res: any) => {
           console.log("Error while find next => No dependances found !");
           res.status(500).send({ message: "Error while find next => No dependances found !" });
         }
-      }).catch((err) => {
-        console.log("Error while find card => " + err);
-        res.status(500).send({ message: "Error while find card => " + err });
-      });
+      } else {
+        console.log("Error while find card => " + playedCard);
+        res.status(500).send({ message: "Error while find card => " + playedCard });
+      }
     } else {
       console.log("Card sended is not found !");
       res.status(500).send("Card sended is not found !");
@@ -116,7 +149,7 @@ exports.findFirstCard = () => {
       if (cards_founded.length == 0) {
         console.log("No card found => create a new one");
         createFirst().then((card) => {
-          resolve(formatData(card));
+          resolve(formatCard(card));
         }).catch((err) => {
           reject(err);
         });
@@ -136,8 +169,17 @@ exports.findFirstCard = () => {
             }
           }
         });
-        const returnCard = new Card(card_found);
-        resolve(formatData(returnCard));
+        //console.log("card_found : " + card_found);
+        if (card_found != undefined) {
+          const returnCard = new Card(card_found);
+          resolve(formatCard(returnCard));
+        } else {
+          createFirst().then((card) => {
+            resolve(formatCard(card));
+          }).catch((err) => {
+            reject(err);
+          });
+        }
       }
     }).catch((err) => {
       console.log("Error while find first card => " + err);
@@ -146,10 +188,11 @@ exports.findFirstCard = () => {
 }
 
 exports.findCardWithId = (id: ObjectId) => {
-  //console.log("DEBUG => findCardWithId => id " + id);
+  //console.log("DEBUG => findCardWithId => id : " + id);
   return new Promise((resolve, reject) => {
-    Card.find({ "_id": id }).then((card) => {
-      resolve(formatData(card));
+    Card.findById(id).then((card) => {
+      //console.log("DEBUG => findCardWithId => card : " + card);
+      resolve(formatCard(card));
     }).catch((err) => {
       console.log("Error while find card with id => " + err);
       reject(err);
@@ -186,7 +229,7 @@ async function createFirst() {
   });
 }
 
-function formatData(card: any) {
+const formatCard = (card: any) => {
   return {
     id: card._id,
     pnjName: card.pnjName,
@@ -196,3 +239,4 @@ function formatData(card: any) {
     choices: card.choices,
   };
 }
+exports.formatCard = formatCard;

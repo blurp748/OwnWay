@@ -2,6 +2,7 @@ module.exports = (app: any) => {
 
     const players = require("../controllers/playersController.ts");
     const cards = require("../controllers/cardsController.ts");
+    const data = require("../data/data.ts");
     const playerRouter = require("express").Router();
     const adminRouter = require("express").Router();
 
@@ -13,6 +14,7 @@ module.exports = (app: any) => {
 
     adminRouter.get("/allCards", cards.getAllCards);
 
+    adminRouter.get("/initDB", data.initDB);
 
     // ----------------------------------------------------
     // --------------------- Players ----------------------

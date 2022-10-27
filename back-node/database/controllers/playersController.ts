@@ -13,19 +13,13 @@ exports.findPlayer = (req: any, res: any) => {
         //console.log("DEBUG => findPlayer => data send : " + playerDB);
         //console.log("DEBUG => findPlayer => data.card  : " + playerDB.card);
 
-        const player = {
-          nourriture: playerDB.nourriture,
-          vie: playerDB.vie,
-          argent: playerDB.argent,
-          neutrality: playerDB.neutrality,
-          step: playerDB.step,
-        }
-
-        cards.findCardWithId(playerDB.card._id).then((cardFind: any) => {
+        cards.findCardWithId(playerDB.card).then((cardFind: any) => {
+          console.log("DEBUG => findPlayer => cardFound : "); console.log(cardFind);
           let dataToSend = {
-            player : player,
-            card: cardFind
+            player: formatPlayer(playerDB),
+            card: cards.formatCard(cardFind)
           }
+          console.log("DEBUG => findPlayer => dataToSend : "); console.log(dataToSend);
           res.send(dataToSend);
         }).catch((err: any) => {
           console.log("Error while find card with id => " + err);
@@ -51,20 +45,13 @@ exports.createPlayer = (req: any, res: any) => {
       card: cardFind.id,
       playedCards: []
     });
-    console.log("DEBUG => createPlayer => cardFind : "); console.log(cardFind);
+    //console.log("DEBUG => createPlayer => cardFind : "); console.log(cardFind);
     player.save()
       .then((playerCreated: any) => {
-        console.log("DEBUG => createPlayer => playerCreated : " + playerCreated);
+        //console.log("DEBUG => createPlayer => playerCreated : " + playerCreated);
         var dataToSend = {
-          player: {
-            nourriture: playerCreated.nourriture,
-            vie: playerCreated.vie,
-            argent: playerCreated.argent,
-            neutrality: playerCreated.neutrality,
-            step: playerCreated.step,
-            player_id: playerCreated.id
-          },
-          card: cardFind
+          player: formatPlayer(playerCreated),
+          card: cards.formatCard(cardFind)
         };
         res.send(dataToSend);
       }).catch((err: any) => {
@@ -87,7 +74,8 @@ exports.savePlayer = (player: any, newCard: any) => {
     argent: player.argent,
     neutrality: player.neutrality,
     step: player.step,
-    card: newCard
+    card: newCard,
+    playedCards: player.playedCards
   }, { new: true })
     .then((data: any) => {
       if (!data) {
@@ -108,3 +96,16 @@ exports.getAllPlayer = (req: any, res: any) => {
       console.log("error lors de la récupération des players => " + err);
     });
 };
+
+const formatPlayer = (player: any) => {
+  //console.log("DEBUG => formatPlayer => player : " + player);
+  return {
+    nourriture: player.nourriture,
+    vie: player.vie,
+    argent: player.argent,
+    neutrality: player.neutrality,
+    step: player.step,
+    player_id: player.id
+  }
+}
+exports.formatPlayer = formatPlayer;

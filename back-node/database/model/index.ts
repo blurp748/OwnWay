@@ -20,10 +20,10 @@ const cardSchema = new mongoose.Schema(
         choices: [
             {
                 description: { type: String, required: true },
-                nourriture: { type: Number, min: 0, max: 100, default: 0 },
-                vie: { type: Number, min: 0, max: 100, default: 0 },
-                argent: { type: Number, min: 0, max: 100, default: 0 },
-                neutrality: { type: Number, min: 0, max: 100, default: 0 },
+                nourriture: { type: Number, min: -100, max: 100, default: 0 },
+                vie: { type: Number, min: -100, max: 100, default: 0 },
+                argent: { type: Number, min: -100, max: 100, default: 0 },
+                neutrality: { type: Number, min: -100, max: 100, default: 0 },
             }
         ],
         dependances: [
