@@ -33,7 +33,7 @@
   }else{
     DataService.getConnection().then((response) =>{
       console.log(response.data)
-      userId.set(response.data.id)
+      userId.set(response.data.player.player_id)
       card = response.data.card
     });
 
@@ -102,35 +102,9 @@
 
     DataService.postNext(player,nb,id).then((response) =>{
         console.log(response);
+        card = response.data.card;
+        player = response.data.player;
     });
-
-    card.pnjName = "Ifrit 2";
-    card.description = "My name is mathis";
-    card.pnjImage = "farfan";
-    card.bgImage = "taverne";
-    card.choices = [
-      {
-        description: "choix 3",
-        nourriture : 0,
-        vie : 0,
-        argent : -20,
-        neutrality : 0
-      },
-      {
-        description: "choix 2",
-        nourriture : 0,
-        vie : 0,
-        argent : 10,
-        neutrality : 0
-      },
-      {
-        description: "choix 1",
-        nourriture : -80,
-        vie : 0,
-        argent : 0,
-        neutrality : 0
-      }
-    ];
   }
 
 </script>

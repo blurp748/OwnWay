@@ -45,10 +45,10 @@ exports.createPlayer = (req: any, res: any) => {
       card: cardFind.id,
       playedCards: []
     });
-    //console.log("DEBUG => createPlayer => cardFind : "); console.log(cardFind);
+    console.log("DEBUG => createPlayer => cardFind : "); console.log(cardFind);
     player.save()
       .then((playerCreated: any) => {
-        //console.log("DEBUG => createPlayer => playerCreated : " + playerCreated);
+        console.log("DEBUG => createPlayer => playerCreated : " + playerCreated);
         var dataToSend = {
           player: formatPlayer(playerCreated),
           card: cards.formatCard(cardFind)

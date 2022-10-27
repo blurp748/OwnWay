@@ -18,7 +18,7 @@ exports.nextCard = async (req: any, res: any) => {
       ~- choice
   */
 
-  console.log("req.body : " + req.body);
+  console.log("req.body : "); console.log(req.body);
   var player: any;
   player = await Player.findById(req.body.player_id);
   const choice = req.body.choice;
@@ -99,8 +99,8 @@ exports.nextCard = async (req: any, res: any) => {
                 const randomCard = cards[Math.floor(Math.random() * cards.length)];
                 // Changement de carte
                 player.playedCards.push(player.card);
-                //console.log("random card choose : " + randomCard);
-                //console.log("player : " + player);
+                console.log("random card choose : " + randomCard);
+                console.log("player : " + player);
 
                 // Sauvegarde du joueur
                 const playerSaved = await playerController.savePlayer(player, randomCard);
@@ -108,7 +108,7 @@ exports.nextCard = async (req: any, res: any) => {
                   player: playerController.formatPlayer(playerSaved ? playerSaved : player),
                   card: formatCard(randomCard),
                 }
-                //console.log("DEBUG => /next => dataToSend : "); console.log(dataToSend);
+                console.log("DEBUG => /next => dataToSend : "); console.log(dataToSend);
                 res.send(dataToSend);
               } else if (cards.length == 0) {
                 console.log("No card found after step filter");
@@ -169,7 +169,7 @@ exports.findFirstCard = () => {
             }
           }
         });
-        //console.log("card_found : " + card_found);
+        console.log("card_found : " + card_found);
         if (card_found != undefined) {
           const returnCard = new Card(card_found);
           resolve(formatCard(returnCard));
@@ -188,10 +188,10 @@ exports.findFirstCard = () => {
 }
 
 exports.findCardWithId = (id: ObjectId) => {
-  //console.log("DEBUG => findCardWithId => id : " + id);
+  console.log("DEBUG => findCardWithId => id : " + id);
   return new Promise((resolve, reject) => {
     Card.findById(id).then((card) => {
-      //console.log("DEBUG => findCardWithId => card : " + card);
+      console.log("DEBUG => findCardWithId => card : " + card);
       resolve(formatCard(card));
     }).catch((err) => {
       console.log("Error while find card with id => " + err);
