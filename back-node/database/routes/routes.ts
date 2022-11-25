@@ -16,6 +16,8 @@ module.exports = (app: any) => {
 
     adminRouter.get("/initDB", data.initDB);
 
+    adminRouter.delete("/resetDB", data.resetDB);
+
     // ----------------------------------------------------
     // --------------------- Players ----------------------
     // ----------------------------------------------------
@@ -28,6 +30,9 @@ module.exports = (app: any) => {
 
     // Choose the next card
     playerRouter.post("/next", cards.nextCard);
+
+    // Delete a Player
+    playerRouter.post("/delete", players.deletePlayer);
 
     // -------------------------------//
 

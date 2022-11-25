@@ -17,6 +17,7 @@ const cardSchema = new mongoose.Schema(
         description: { type: String, required: true },
         pnjImage: { type: String, required: true },
         bgImage: { type: String, required: true },
+        no_card: { type: String, required: true },
         choices: [
             {
                 description: { type: String, required: true },
@@ -29,24 +30,28 @@ const cardSchema = new mongoose.Schema(
         dependances: [
             {
                 nourriture: {
-                    min: {type: Number, default: 0},
-                    max: {type: Number, default: 100}
+                    min: { type: Number, default: 0 },
+                    max: { type: Number, default: 100 }
                 },
                 vie: {
-                    min: {type: Number, default: 0},
-                    max: {type: Number, default: 100},
+                    min: { type: Number, default: 0 },
+                    max: { type: Number, default: 100 },
                 },
                 argent: {
-                    min: {type: Number, default: 0},
-                    max: {type: Number, default: 100}
+                    min: { type: Number, default: 0 },
+                    max: { type: Number, default: 100 }
                 },
                 neutrality: {
-                    min: {type: Number, default: 0},
-                    max: {type: Number, default: 100}
+                    min: { type: Number, default: 0 },
+                    max: { type: Number, default: 100 }
                 },
                 step: {
-                    min: {type: Number, default: 1},
-                    max: {type: Number}
+                    min: { type: Number, default: 1 },
+                    max: { type: Number }
+                },
+                card: {
+                    no_card: { type: Number },
+                    choice_to_access: { type: Number }
                 }
             }
         ]
@@ -71,7 +76,10 @@ const playerSchema = new mongoose.Schema(
         neutrality: { type: Number, min: 0, max: 100, required: true },
         step: { type: Number, required: true },
         card: { type: mongoose.Types.ObjectId, ref: "Card", required: true },
-        playedCards: [cardSchema]
+        playedCards: [{
+            card: cardSchema,
+            choice: { type: Number },
+        }]
     },
     { timestamps: true }
 );

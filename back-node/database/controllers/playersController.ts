@@ -62,30 +62,35 @@ exports.createPlayer = (req: any, res: any) => {
   }).catch((err: any) => {
     console.log("Create Player error => " + err);
     res
-      .setStatus(500)
+      .status(500)
       .send({ message: "Erreur lors de la création du player : " + err });
   })
 };
 
 exports.savePlayer = (player: any, newCard: any) => {
-  Player.findByIdAndUpdate(player._id, {
-    nourriture: player.nourriture,
-    vie: player.vie,
-    argent: player.argent,
-    neutrality: player.neutrality,
-    step: player.step,
-    card: newCard,
-    playedCards: player.playedCards
-  }, { new: true })
-    .then((data: any) => {
-      if (!data) {
-        console.log("Not found Player with id " + player._id);
-      } else {
-        console.log("Player updated successfully.");
-      }
-    }).catch((err: any) => {
-      console.log("Error updating Player with id=" + player._id);
-    });
+  return new Promise((resolve, reject) => {
+    Player.findByIdAndUpdate(player._id, {
+      nourriture: player.nourriture,
+      vie: player.vie,
+      argent: player.argent,
+      neutrality: player.neutrality,
+      step: player.step,
+      card: newCard,
+      playedCards: player.playedCards
+    }, { new: true })
+      .then((data: any) => {
+        if (!data) {
+          console.log("Not found Player with id " + player._id);
+          reject("Not found Player with id " + player._id);
+        } else {
+          console.log("Player updated successfully.");
+          resolve(data);
+        }
+      }).catch((err: any) => {
+        console.log("Error updating Player with id=" + player._id);
+        reject("Error updating Player with id=" + player._id);
+      });
+  })
 };
 
 exports.getAllPlayer = (req: any, res: any) => {
@@ -96,6 +101,17 @@ exports.getAllPlayer = (req: any, res: any) => {
       console.log("error lors de la récupération des players => " + err);
     });
 };
+
+exports.deletePlayer = async (req: any, res: any) => {
+  const id = req.body.player_id;
+
+  const dbresp = await Player.findByIdAndRemove(id);
+  if (!dbresp) {
+    res.status(500).send({ message: "Not found Player with id " + id });
+  } else {
+    res.send({ message: "Player was deleted successfully!" });
+  }
+}
 
 const formatPlayer = (player: any) => {
   //console.log("DEBUG => formatPlayer => player : " + player);
