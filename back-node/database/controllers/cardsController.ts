@@ -192,6 +192,9 @@ exports.nextCard = async (req: any, res: any) => {
         player: playerController.formatPlayer(playerSaved),
         card: formatCard(data.card)
       };
+      if(dataToSend.card != undefined){
+        res.sand({player : dataToSend.player, card : "Bravo ! Vous avez fini le jeu !"});
+      }
       res.send(dataToSend);
     }).catch((err: any) => {
       res.status(500).send(`Error happend when saving player => ${err}`)
