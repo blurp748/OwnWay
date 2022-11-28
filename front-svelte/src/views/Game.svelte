@@ -26,14 +26,15 @@
 
   if(id != -1){
     DataService.postConnection(id).then((response) =>{
-      console.log(response.data)
       card = response.data.card;
       player = response.data.player;
     });
   }else{
     DataService.getConnection().then((response) =>{
-      console.log(response.data)
-      userId.set(response.data.player.player_id)
+      userId.subscribe(value => {
+        localStorage.setItem("userId",response.data.player.player_id);
+        id = response.data.player.player_id;
+      });
       card = response.data.card
     });
 
@@ -83,7 +84,6 @@
 
   function lose(){
       DataService.deletePlayer(id).then((response) =>{
-          console.log(response.data)
           userId.set(-1)
           navigate('/')
       });

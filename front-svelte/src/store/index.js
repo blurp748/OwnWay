@@ -1,3 +1,4 @@
 import { writable } from 'svelte/store';
 
-export const userId = writable(-1);
+const storedUserId = localStorage.getItem("userId");
+export const userId = writable(storedUserId ? storedUserId : -1);

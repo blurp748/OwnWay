@@ -6,7 +6,6 @@ class DataService {
 
 	postNext(player,choice,userId) {
         console.log("postNext called");
-        console.log("userId: " + userId);
 		return axios.post(API_URL + "/player/next", {
             player_id: userId,
             nourriture: player.nourriture,
