@@ -84,7 +84,7 @@
 
   function lose(){
       DataService.deletePlayer(id).then((response) =>{
-          userId.set(-1)
+          localStorage.setItem("userId","-1");
           navigate('/')
       });
   }
@@ -101,7 +101,11 @@
 
     DataService.postNext(player,nb,id).then((response) =>{
         console.log(response);
-        card = response.data.card;
+        if(response.data.finish){
+          lose();
+        }else{
+          card = response.data.card;
+        }
     });
   }
 

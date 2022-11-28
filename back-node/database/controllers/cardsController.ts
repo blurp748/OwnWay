@@ -188,12 +188,25 @@ exports.nextCard = async (req: any, res: any) => {
     data = await getNextCard(data);
 
     playerController.savePlayer(data.player, data.card).then((playerSaved: any) => {
+      let finishToSend = false;
+      let playerToSend = playerController.formatPlayer(playerSaved);
+      console.log("card ",data.card);
+      let cardToSend;
+      if(data.card){
+        cardToSend = formatCard(data.card);
+      }else{
+        cardToSend = null;
+        finishToSend = true;
+      }
+      console.log("card ok")
       const dataToSend = {
-        player: playerController.formatPlayer(playerSaved),
-        card: formatCard(data.card)
+        player: playerToSend,
+        card: cardToSend,
+        finish: finishToSend
       };
+      console.log("ok")
       if(dataToSend.card == undefined){
-        res.send({player : dataToSend.player, card : "Bravo ! Vous avez fini le jeu !"});
+        dataToSend.finish = true;
       }
       res.send(dataToSend);
     }).catch((err: any) => {
