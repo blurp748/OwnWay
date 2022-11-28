@@ -146,7 +146,7 @@
         </div>
       </div>
 
-      <Range/>
+      <Range neutrality={player.neutrality}/>
 
     </div>
 
