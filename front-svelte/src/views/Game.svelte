@@ -13,6 +13,7 @@
   const navigate = useNavigate();
 
   let card = {};
+  let isWin = true;
   card.choices = []; // in order to disable #each error on template 
   card.bgImage = ``;
   card.pnjImage = ``;
@@ -62,19 +63,22 @@
     if(player.nourriture > 100){
       player.nourriture = 100;
     }else if(player.nourriture <= 0){
-      lose()
+      isWin = false;
+      endGame()
     }
 
     if(player.vie > 100){
       player.vie = 100;
     }else if(player.vie <= 0){
-      lose()
+      isWin = false;
+      endGame()
     }
 
     if(player.argent > 100){
       player.argent = 100;
     }else if(player.argent <= 0){
-      lose()
+      isWin = false;
+      endGame()
     }
 
     if(player.neutrality > 100) player.neutrality = 100;
@@ -82,11 +86,18 @@
 
   }
 
-  function lose(){
+  function endGame(){
+
       DataService.deletePlayer(id).then((response) =>{
           localStorage.setItem("userId","-1");
-          navigate('/')
+          let modal = document.getElementById("modal");
+          // @ts-ignore
+          modal.checked = true;
       });
+  }
+
+  function goHome() {
+    navigate('/');
   }
 
   function next(choice,nb){
@@ -102,7 +113,7 @@
     DataService.postNext(player,nb,id).then((response) =>{
         console.log(response);
         if(response.data.finish){
-          lose();
+          endGame();
         }else{
           card = response.data.card;
         }
@@ -148,6 +159,21 @@
 
       <Range neutrality={player.neutrality}/>
 
+    </div>
+
+    <!-- Put this part before </body> tag -->
+    <input type="checkbox" id="modal" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box bg-orange-200 ">
+        {#if isWin}
+          <h3 class="font-bold text-lg animate-[wiggle_1s_ease-in-out_infinite]">Tu as gagné !</h3>
+        {:else}
+          <h3 class="font-bold text-lg">Tu as perdu !</h3>
+        {/if}
+        <div class="modal-action">
+          <label for="modal" class="btn" on:click={goHome}>Retourner à l'accueil</label>
+        </div>
+      </div>
     </div>
 
     <!-- Card -->

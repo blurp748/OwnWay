@@ -190,7 +190,6 @@ exports.nextCard = async (req: any, res: any) => {
     playerController.savePlayer(data.player, data.card).then((playerSaved: any) => {
       let finishToSend = false;
       let playerToSend = playerController.formatPlayer(playerSaved);
-      console.log("card ",data.card);
       let cardToSend;
       if(data.card){
         cardToSend = formatCard(data.card);
@@ -198,13 +197,11 @@ exports.nextCard = async (req: any, res: any) => {
         cardToSend = null;
         finishToSend = true;
       }
-      console.log("card ok")
       const dataToSend = {
         player: playerToSend,
         card: cardToSend,
         finish: finishToSend
       };
-      console.log("ok")
       if(dataToSend.card == undefined){
         dataToSend.finish = true;
       }

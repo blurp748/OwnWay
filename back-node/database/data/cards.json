@@ -3,18 +3,15 @@
         {
             "pnjName": "oldrym",
             "pnjImage": "oldrym",
-            "bgImage": "forest",
-            "description": "Hey ! You're finally awake ?",
+            "bgImage": "taverne",
+            "description": "Salut ! Tu es enfin reveillé ?",
             "no_card": "old0",
             "choices": [
                 {
-                    "description": "Yes, but who are you ?"
+                    "description": "Oui ?"
                 },
                 {
-                    "description": "No !"
-                },
-                {
-                    "description": "Yep bro !"
+                    "description": "Laisse moi dormir !"
                 }
             ],
             "dependances": [
