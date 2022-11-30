@@ -51,8 +51,8 @@
   $: styleNourriture = `--value: ${player.nourriture}; --thickness: 2px`;
   $: styleVie = `--value: ${player.vie}; --thickness: 2px`;
   $: styleArgent = `--value: ${player.argent}; --thickness: 2px`;
-  $: bgImageBackground = `background-image: url("src/assets/background/${card.bgImage}.png");`;
-  $: bgImagePnj = `background-image: url("src/assets/pnj/${card.pnjImage}.png");`;
+  $: bgImageBackground = `background-image: url("./assets/background/${card.bgImage}.png");`;
+  $: bgImagePnj = `background-image: url("./assets/pnj/${card.pnjImage}.png");`;
 
   /*------------------------*/
   /*------- FONCTIONS ------*/
