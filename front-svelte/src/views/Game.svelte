@@ -4,7 +4,7 @@
   import DataService from '../services/DataService';
   import { useNavigate } from "svelte-navigator";
   import { DrumstickIcon, HeartIcon, DollarIcon } from 'svelte-uicons';
-  import { userId } from "../store";
+  import { fade, blur } from "svelte/transition";
 
   /*------------------------*/
   /*------ CONSTANTES ------*/
@@ -19,23 +19,17 @@
   card.pnjImage = ``;
 
   let player = {};
-  let id;
+  let id = localStorage.getItem("userId");
 
-  userId.subscribe(value => {
-    id = value;
-  });
-
-  if(id != -1){
+  if(id != null){
     DataService.postConnection(id).then((response) =>{
       card = response.data.card;
       player = response.data.player;
     });
   }else{
     DataService.getConnection().then((response) =>{
-      userId.subscribe(value => {
-        localStorage.setItem("userId",response.data.player.player_id);
-        id = response.data.player.player_id;
-      });
+      localStorage.setItem("userId",response.data.player.player_id);
+      id = response.data.player.player_id;
       card = response.data.card
     });
 
@@ -53,6 +47,8 @@
   $: styleArgent = `--value: ${player.argent}; --thickness: 2px`;
   $: bgImageBackground = `background-image: url("./assets/background/${card.bgImage}.png");`;
   $: bgImagePnj = `background-image: url("./assets/pnj/${card.pnjImage}.png");`;
+
+  $: card.bgImage, console.log("CHANGED");
 
   /*------------------------*/
   /*------- FONCTIONS ------*/
@@ -89,7 +85,7 @@
   function endGame(){
 
       DataService.deletePlayer(id).then((response) =>{
-          localStorage.setItem("userId","-1");
+          localStorage.removeItem("userId");
           let modal = document.getElementById("modal");
           // @ts-ignore
           modal.checked = true;
@@ -177,8 +173,9 @@
     </div>
 
     <!-- Card -->
-    <div class="bg-orange-200 row-span-5 flex items-center justify-center" >
-      <div class="bg-cover w-11/12 h-5/6" style={bgImageBackground}>
+    {#key bgImagePnj}
+    <div class="bg-orange-200 row-span-5 flex items-center justify-center">
+      <div class="bg-cover w-11/12 h-5/6" style={bgImageBackground} in:blur="{{duration: 1000}}" out:fade="{{duration: 1000}}">
         <div class="bg-contain bg-no-repeat w-full h-full flex justify-center items-end bg-center" style={bgImagePnj}>
           <div class="card bg-stone-700 w-11/12 bg-opacity-80 -mb-6">
             <div class="card-body">
@@ -189,6 +186,7 @@
         </div>
       </div>
     </div>
+    {/key}
 
     <!-- Choices -->
     <div class="bg-stone-800 flex items-center justify-center">

@@ -54,7 +54,7 @@
             "pnjName": "gorsh",
             "description": "Hey ! Avec Chipie, on se demandait si tu pouvais nous aider à retrouver mon collier ?",
             "pnjImage": "gorsh",
-            "bgImage": "foret",
+            "bgImage": "forest",
             "no_card": "gor0",
             "choices": [
                 {
@@ -63,7 +63,7 @@
                     "nourriture": 10
                 },
                 {
-                    "description": "On se connait ? *parir*"
+                    "description": "On se connait ? *partir*"
                 },
                 {
                     "description": "*Chercher le collier, mais le garder pour vous*",

@@ -1,13 +1,10 @@
 <script>
     import { Link } from "svelte-navigator";
-    import { userId } from "../store";
 
-    let id;
-    userId.subscribe(value => {
-      id = value;
-    });
+    let id = localStorage.getItem("userId");
     
-    let msg = (id == -1) ? "Jouer" : "Continuer";
+    let msg = id==null ? "Jouer" : "Continuer";
+    console.log(id);
     
 </script>
 
