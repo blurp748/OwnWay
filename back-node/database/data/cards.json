@@ -51,6 +51,67 @@
             ]
         },
         {
+            "pnjName": "farfan",
+            "description": "Encore toi ? Tu vas payer pour la dernière fois !",
+            "pnjImage": "farfan",
+            "bgImage": "ville",
+            "no_card": "far1",
+            "choices": [
+                {
+                    "description": "Désolé, je t'offre une bière en compensation ?",
+                    "argent": -10,
+                    "nourriture": 10,
+                    "neutrality": 10
+                },
+                {
+                    "description": "Excuse-moi... Tiens, une petite compensation pour m'excuser.",
+                    "argent": -20
+                },
+                {
+                    "description": "Tu veux en reprendre, ça t'as pas suffit la dernière fois ? *Donner un coup de poing dans le visage*",
+                    "neutrality": -10
+                }
+            ],
+            "dependances": [
+                {
+                    "neutrality": {
+                        "max": 40
+                    },
+                    "step": {
+                        "min": 1
+                    },
+                    "card": {
+                        "no_card": 1,
+                        "choice_to_access": 2
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "farfan",
+            "description": "*Arrive dans votre dos et vous mets un coup d'épée* Pour mon honneur !",
+            "pnjImage": "farfan",
+            "bgImage": "ville",
+            "no_card": "far2",
+            "choices": [
+                {
+                    "description": "Aaaaaargh !",
+                    "vie": -30
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 1
+                    },
+                    "card": {
+                        "no_card": 2,
+                        "choice_to_access": 2
+                    }
+                }
+            ]
+        },
+        {
             "pnjName": "gorsh",
             "description": "Hey ! Avec Chipie, on se demandait si tu pouvais nous aider à retrouver mon collier ?",
             "pnjImage": "gorsh",
@@ -80,34 +141,199 @@
             ]
         },
         {
-            "pnjName": "farfan",
-            "description": "Encore toi ? Tu vas payer pour la dernière fois !",
-            "pnjImage": "farfan",
-            "bgImage": "ville",
-            "no_card": "far1",
+            "pnjName": "imag",
+            "description": "Votre réputation vous précède.. Donneriez-vous un peu de nourriture pour nos mendiants ?",
+            "pnjImage": "imag",
+            "bgImage": "eglise",
+            "no_card": "ima0",
             "choices": [
                 {
-                    "description": "Désolé, je t'offre une bière en compensation ?",
-                    "argent": -10,
-                    "nourriture": 10,
-                    "neutrality": 10
+                    "description": "Je n'ai rien sur moi aujourd'hui.. une prochaine fois peut-être"
                 },
                 {
-                    "description": "Excuse-moi... Tiens, une petite compensation pour m'excuser.",
-                    "argent": -20
+                    "description": "Avec plaisir !",
+                    "neutrality": 20,
+                    "nourriture": -20,
+                    "vie": 10
                 },
                 {
-                    "description": "Tu veux en reprendre, ça t'as pas suffit la dernière fois ? *Donner un coup de poing dans le visage*",
+                    "description": "Pour des gueux ? Jamais !",
                     "neutrality": -10
                 }
             ],
             "dependances": [
                 {
-                    "neutrality": {
-                        "max": 40
-                    },
                     "step": {
-                        "min": 2
+                        "min": 3
+                    },
+                    "neutrality": {
+                        "min": 70
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "imag",
+            "description": "Monseigneur, un brigand s'est introduit dans l'église et nous à volé. Aidez-nous !",
+            "pnjImage": "imag",
+            "bgImage": "eglise",
+            "no_card": "ima1",
+            "choices": [
+                {
+                    "description": "*Rattraper le brigand et garder les biens afin de les revendre*",
+                    "neutrality": -30,
+                    "argent": 20
+                },
+                {
+                    "description": "*Rattraper le brigand et récupérer les biens* Voici vos biens mon père.",
+                    "neutrality": 20,
+                    "argent": 20,
+                    "vie": 20
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
+                    },
+                    "neutrality": {
+                        "min": 60
+                    },
+                    "card": {
+                        "no_card": 1,
+                        "choice_to_access": 1
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "imag",
+            "description": "Vous êtes tombé bien bas.. Rachetez votre grâce avec un petit don ?",
+            "pnjImage": "imag",
+            "bgImage": "eglise",
+            "no_card": "ima2",
+            "choices": [
+                {
+                    "description": "Sûrement pas mon pote !",
+                    "neutrality": -10
+                },
+                {
+                    "description": "Un petit peu de nourriture vous irez?",
+                    "nourriture": -20,
+                    "neutrality": 20
+                },
+                {
+                    "description": "Il me reste de l'argent si vous le souhaitez",
+                    "argent": -20,
+                    "neutrality": 20
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
+                    },
+                    "neutrality": {
+                        "max": 30 
+                    },
+                    "card": {
+                        "no_card": 2,
+                        "choice_to_access": 2
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "imag",
+            "description": "Mon fils, pour tous vos péchés, nous allons vous délivrer de vos maux. Comment voulez-vous être châtié ?",
+            "pnjImage": "imag",
+            "bgImage": "eglise",
+            "no_card": "ima3",
+            "choices": [
+                {
+                    "description": "15 coups de fouet",
+                    "vie": -10
+                },
+                {
+                    "description": "Torturé",
+                    "vie": -20
+                },
+                {
+                    "description": "Au bûcher !",
+                    "vie": -30
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
+                    },
+                    "neutrality": {
+                        "max": 20 
+                    },
+                    "card": {
+                        "no_card": 3,
+                        "choice_to_access": 0
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "melnir",
+            "description": "Bonjour monsieur, auriez-vous l'amabilité de bien vouloir aider un mage ? Il me faudrait quelques ingrédients pour une expérience.",
+            "pnjImage": "melnir",
+            "bgImage": "tour_de_mage",
+            "no_card": "mel0",
+            "choices": [
+                {
+                    "description": "Vous ? Un nain mage ? Laissez moi rire ! Ha ha ha ha ! *partir*",
+                    "neutrality": -15
+                },
+                {
+                    "description": "Vous êtes un mage ? Impossible, je croyait que les nains ne pouvaient le devenir !",
+                    "neutrality": -5
+                },
+                {
+                    "description": "Bien sûr que je vais vous aider. *Faire ce qu'il demande*",
+                    "neutrality": 10,
+                    "argent": -10
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
+                    },
+                    "neutrality": {
+                        "min": 60 
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "melnir",
+            "description": "Merci beaucoup pour la dernière fois. Grâce à vous, j'ai pu avoir de très bon résultat. Voulez vous que je vous en fasse profiter ?",
+            "pnjImage": "melnir",
+            "bgImage": "tour_de_mage",
+            "no_card": "mel1",
+            "choices": [
+                {
+                    "description": "C'est très gentil à vous, mais ça ira. "
+                },
+                {
+                    "description": "Je vous remercie, c'est gentil de votre part",
+                    "vie": 10
+                },
+                {
+                    "description": "Bien sûr, mais j'aimerais profiter de l'expérience au maximum",
+                    "vie": 20,
+                    "neutrality": -5
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
                     },
                     "card": {
                         "no_card": 1,
@@ -115,6 +341,295 @@
                     }
                 }
             ]
+        },
+        {
+            "pnjName": "melnir",
+            "description": "Depuis que vous m'avez aider, mes expériences sont couronnées de succès ! Tenez, voilà pour vous.",
+            "pnjImage": "melnir",
+            "bgImage": "tour_de_mage",
+            "no_card": "mel2",
+            "choices": [
+                {
+                    "description": "Je vous remercie pour ce don.",
+                    "argent": 15,
+                    "vie": 10
+                },
+                {
+                    "description": "Qui ça ? Moi ? Si vos expériences fonctionnent, c'est uniquement grâce à vous !",
+                    "neutrality": 15
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
+                    },
+                    "card": {
+                        "no_card": 2,
+                        "choice_to_access": 0
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "invari",
+            "description": "Nous sommes le Culte de l'ombre. Rejoins-nous !",
+            "pnjImage": "invari",
+            "bgImage": "donjon",
+            "no_card": "inv0",
+            "choices": [
+                {
+                    "description": "Barre toi de là."
+                },
+                {
+                    "description": "ça marche !",
+                    "neutrality": -10
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
+                    },
+                    "neutrality": {
+                        "max": 40
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "invari",
+            "description": "Prouve-nous ta valeur !",
+            "pnjImage": "invari",
+            "bgImage": "donjon",
+            "no_card": "inv1",
+            "choices": [
+                {
+                    "description": "*Tuer quelqu'un et ramener le corps* Autre chose ?",
+                    "neutrality": -20,
+                    "vie": -20
+                },
+                {
+                    "description": "*Donner une grande somme d'argent* J'espère que ça suffiras",
+                    "argent": -30
+                },
+                {
+                    "description": "*Donner un reste de votre repas de la veille* Cadeau !",
+                    "nourriture": -5
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
+                    },
+                    "card": {
+                        "no_card": 1,
+                        "choice_to_access": 1
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "invari",
+            "description": "Excellent ! Brûler quelques maisons ça vous intéresse ?",
+            "pnjImage": "invari",
+            "bgImage": "donjon",
+            "no_card": "inv2",
+            "choices": [
+                {
+                    "description": "Vous êtes folle ! *Dénoncer aux gardes de la ville*",
+                    "neutrality": 20,
+                    "nourriture": 20
+                },
+                {
+                    "description": "C'est parti !",
+                    "neutrality": -20,
+                    "vie": -10
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
+                    },
+                    "card": {
+                        "no_card": 2,
+                        "choice_to_access": 0 
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "invari",
+            "description": "Votre acte de la dernière fois n'a pas suffit. Adieu",
+            "pnjImage": "invari",
+            "bgImage": "donjon",
+            "no_card": "inv3",
+            "choices": [
+                {
+                    "description": "Ok.."
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
+                    },
+                    "card": {
+                        "no_card": 3,
+                        "choice_to_access": 2 
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "nerileth",
+            "description": "On a besoin d'aide pour l'écurie, accepteriez-vous de passer un coup de balai ?",
+            "pnjImage": "nerileth",
+            "bgImage": "entree_ville",
+            "no_card": "ner0",
+            "choices": [
+                {
+                    "description": "Je n'ai pas le temps navré."
+                },
+                {
+                    "description": "Bien sûr !",
+                    "argent": 10
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 1
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "nerileth",
+            "description": "Un de nos chevaux vient de s'échapper.. Pourriez vous le retrouver ?",
+            "pnjImage": "nerileth",
+            "bgImage": "entree_ville",
+            "no_card": "ner1",
+            "choices": [
+                {
+                    "description": "*Retrouver le cheval et le manger* Une bonne réserve de bouffe ça ! ",
+                    "nourriture": 30,
+                    "neutrality": -10
+                },
+                {
+                    "description": "*Retrouver le cheval et le ramener* Et voici !",
+                    "argent": 20,
+                    "neutrality": 10
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 1
+                    },
+                    "card": {
+                        "no_card": 1,
+                        "choice_to_access": 1 
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "nesmera",
+            "description": "De l'argent pour un meurtre ça vous dit ?",
+            "pnjImage": "nesmera",
+            "bgImage": "ruelle_sombre",
+            "no_card": "nes0",
+            "choices": [
+                {
+                    "description": "Vous n'avez pas honte ? *Tabasser Nesmera*",
+                    "nourriture": 20,
+                    "neutrality": 20
+                },
+                {
+                    "description": "On crache pas sur de l'argent gratuit.. *Executer le contrat*",
+                    "argent": 20,
+                    "neutrality": -20,
+                    "vie": 10
+                },
+                {
+                    "description": "ça ne m'intéresse pas."
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 1
+                    },
+                    "neutrality": {
+                        "max": 50
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "nesmera",
+            "description": "*Le dragon vous saute à la gorge et mord* Vengeance !!",
+            "pnjImage": "nesmera",
+            "bgImage": "ruelle_sombre",
+            "no_card": "nes1",
+            "choices": [
+                {
+                    "description": "*Retirer le dragon et s'enfuir*",
+                    "vie": -20
+                },
+                {
+                    "description": "*Tuer le dragon*",
+                    "vie": -20
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 1
+                    },
+                    "card": {
+                        "no_card": 1,
+                        "choice_to_access": 0 
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "nesmera",
+            "description": "Le capitaine de la garde me pose problème.. pourriez-vous vous en occuper ?",
+            "pnjImage": "nesmera",
+            "bgImage": "ruelle_sombre",
+            "no_card": "nes2",
+            "choices": [
+                {
+                    "description": "Je ne préfère pas prendre le risque."
+                },
+                {
+                    "description": "C'est comme si c'était fait. *Tuer le capitaine*",
+                    "argent": 20,
+                    "neutrality": -20
+                },
+                {
+                    "description": "Il entendra parler de moi.*Menacer le capitaine*",
+                    "argent": 10,
+                    "neutrality": -10
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 1
+                    },
+                    "card": {
+                        "no_card": 2,
+                        "choice_to_access": 1 
+                    }
+                }
+            ]
         }
+        
     ]
 }

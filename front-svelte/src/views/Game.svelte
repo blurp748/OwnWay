@@ -2,6 +2,7 @@
 
   import Range from "../components/Range.svelte";
   import DataService from '../services/DataService';
+  import { userId } from "../store";
   import { useNavigate } from "svelte-navigator";
   import { DrumstickIcon, HeartIcon, DollarIcon } from 'svelte-uicons';
   import { fade, blur } from "svelte/transition";
@@ -19,8 +20,13 @@
   card.pnjImage = ``;
 
   let player = {};
-  let id = localStorage.getItem("userId");
 
+  let id;
+  userId.subscribe(value => {
+      id = value;
+      console.log(id);
+  });
+  
   if(id != null){
     DataService.postConnection(id).then((response) =>{
       card = response.data.card;
@@ -47,8 +53,6 @@
   $: styleArgent = `--value: ${player.argent}; --thickness: 2px`;
   $: bgImageBackground = `background-image: url("./assets/background/${card.bgImage}.png");`;
   $: bgImagePnj = `background-image: url("./assets/pnj/${card.pnjImage}.png");`;
-
-  $: card.bgImage, console.log("CHANGED");
 
   /*------------------------*/
   /*------- FONCTIONS ------*/
@@ -107,7 +111,6 @@
     checkPlayerStat();
 
     DataService.postNext(player,nb,id).then((response) =>{
-        console.log(response);
         if(response.data.finish){
           endGame();
         }else{
@@ -173,7 +176,7 @@
     </div>
 
     <!-- Card -->
-    {#key bgImagePnj}
+    {#key bgImageBackground}
     <div class="bg-orange-200 row-span-5 flex items-center justify-center">
       <div class="bg-cover w-11/12 h-5/6" style={bgImageBackground} in:blur="{{duration: 1000}}" out:fade="{{duration: 1000}}">
         <div class="bg-contain bg-no-repeat w-full h-full flex justify-center items-end bg-center" style={bgImagePnj}>
