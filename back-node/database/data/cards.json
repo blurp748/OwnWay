@@ -24,6 +24,29 @@
             ]
         },
         {
+            "pnjName": "oldrym",
+            "pnjImage": "oldrym",
+            "bgImage": "taverne",
+            "description": "Noble voyageur, un peu de musique pour égayer cette journée?",
+            "no_card": "old1",
+            "choices": [
+                {
+                    "description": "Ça ira."
+                },
+                {
+                    "description": "*Danser*",
+                    "vie": 10
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 5
+                    }
+                }
+            ]
+        },
+        {
             "pnjName": "farfan",
             "description": "Tu veux rentrer ? Il va falloir payer, mon ami !",
             "pnjImage": "farfan",
@@ -35,7 +58,7 @@
                     "argent": -10
                 },
                 {
-                    "description": "Eh ! Regarde là bas, c'est quoi ? *Courrir à l'intérieur de la ville*"
+                    "description": "Eh ! Regarde là bas, c'est quoi ? *Courir à l'intérieur de la ville*"
                 },
                 {
                     "description": "*Donner un coup de poing* Je paye pas moi !",
@@ -629,7 +652,116 @@
                     }
                 }
             ]
+        },
+        {
+            "pnjName": "nesmera",
+            "description": "Le capitaine de la garde me pose problème.. pourriez-vous vous en occuper ?",
+            "pnjImage": "nesmera",
+            "bgImage": "ruelle_sombre",
+            "no_card": "nes2",
+            "choices": [
+                {
+                    "description": "Je ne préfère pas prendre le risque."
+                },
+                {
+                    "description": "C'est comme si c'était fait. *Tuer le capitaine*",
+                    "argent": 20,
+                    "neutrality": -20
+                },
+                {
+                    "description": "Il entendra parler de moi.*Menacer le capitaine*",
+                    "argent": 10,
+                    "neutrality": -10
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 1
+                    },
+                    "card": {
+                        "no_card": 2,
+                        "choice_to_access": 1 
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "ozzuda",
+            "description": "Ceci est un guet-apens ! Votre or ou votre vie !",
+            "pnjImage": "ozzuda",
+            "bgImage": "forest",
+            "no_card": "ozz0",
+            "choices": [
+                {
+                    "description": "Sûrement pas ! * Se battre *"
+                },
+                {
+                    "description": "Je préfère ne rien faire * Donner une partie de votre or*",
+                    "argent": -20
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 1
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "ozzuda",
+            "description": "Je me suis blessé à la jambe.. Une potion pourrait m'aider ?",
+            "pnjImage": "ozzuda",
+            "bgImage": "forest",
+            "no_card": "ozz1",
+            "choices": [
+                {
+                    "description": "C'est toi qui m'a volé la dernière fois ! * Ne pas l'aider et s'en aller *"
+                },
+                {
+                    "description": "C'est toi qui m'a volé la dernière fois ! * Lui voler ses biens*",
+                    "neutrality": -20
+                },
+                {
+                    "description": "Oui bien-sûr !",
+                    "neutrality": 20
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 1
+                    },
+                    "card": {
+                        "no_card": 1,
+                        "choice_to_access": 1 
+                    }
+                }
+            ]
+        },
+        {
+            "pnjName": "reytris",
+            "description": "Le culte de la Flamme éternelle recherche de nouveaux membres..",
+            "pnjImage": "reytris",
+            "bgImage": "ville",
+            "no_card": "rey0",
+            "choices": [
+                {
+                    "description": "*Partir*"
+                },
+                {
+                    "description": "*Rejoindre*",
+                    "neutrality": -20
+                }
+            ],
+            "dependances": [
+                {
+                    "step": {
+                        "min": 3
+                    }
+                }
+            ]
         }
-        
     ]
 }
