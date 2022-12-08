@@ -17,10 +17,27 @@ exports.initDB = async (req: any, res: any) => {
             });
             if (!alreadySaved) { await cardMongo.save(); }
         });
-    })
+    });
     console.log("DEBUG => initDB => end");
     res.send("initDB done");
 };
+
+exports.init = async () => {
+    const cardsToSave = cards.cards;
+    cardsToSave.forEach((cardJSON) => {
+        const cardMongo = new Card(cardJSON);
+        let alreadySaved = false;
+
+        Card.find().then(async (cards) => {
+            cards.forEach((cardInDB) => {
+                if ((cardInDB.description === cardMongo.description) &&
+                    (cardInDB.pnjName === cardMongo.pnjName)) { alreadySaved = true; }
+            });
+            if (!alreadySaved) { await cardMongo.save(); }
+        });
+    });
+    return "init done";
+}
 
 exports.resetDB = async (req: any, res: any) => {
     console.log("Clear card DB");

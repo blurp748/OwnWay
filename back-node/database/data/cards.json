@@ -104,8 +104,8 @@
                         "min": 1
                     },
                     "card": {
-                        "no_card": 1,
-                        "choice_to_access": 2
+                        "no_card": "far0",
+                        "choice_to_access": [2]
                     }
                 }
             ]
@@ -128,8 +128,8 @@
                         "min": 1
                     },
                     "card": {
-                        "no_card": 2,
-                        "choice_to_access": 2
+                        "no_card": "far1",
+                        "choice_to_access": [2]
                     }
                 }
             ]
@@ -223,8 +223,8 @@
                         "min": 60
                     },
                     "card": {
-                        "no_card": 1,
-                        "choice_to_access": 1
+                        "no_card": "ima0",
+                        "choice_to_access": [1]
                     }
                 }
             ]
@@ -260,8 +260,8 @@
                         "max": 30 
                     },
                     "card": {
-                        "no_card": 2,
-                        "choice_to_access": 2
+                        "no_card": "ima0",
+                        "choice_to_access": [2]
                     }
                 }
             ]
@@ -295,8 +295,8 @@
                         "max": 20 
                     },
                     "card": {
-                        "no_card": 3,
-                        "choice_to_access": 0
+                        "no_card": "ima2",
+                        "choice_to_access": [0]
                     }
                 }
             ]
@@ -359,8 +359,8 @@
                         "min": 3
                     },
                     "card": {
-                        "no_card": 1,
-                        "choice_to_access": 2
+                        "no_card": "mel0",
+                        "choice_to_access": [2]
                     }
                 }
             ]
@@ -388,8 +388,8 @@
                         "min": 3
                     },
                     "card": {
-                        "no_card": 2,
-                        "choice_to_access": 0
+                        "no_card": "mel1",
+                        "choice_to_access": [0]
                     }
                 }
             ]
@@ -447,8 +447,8 @@
                         "min": 3
                     },
                     "card": {
-                        "no_card": 1,
-                        "choice_to_access": 1
+                        "no_card": "inv0",
+                        "choice_to_access": [1]
                     }
                 }
             ]
@@ -477,8 +477,8 @@
                         "min": 3
                     },
                     "card": {
-                        "no_card": 2,
-                        "choice_to_access": 0 
+                        "no_card": "inv1",
+                        "choice_to_access": [0] 
                     }
                 }
             ]
@@ -500,8 +500,8 @@
                         "min": 3
                     },
                     "card": {
-                        "no_card": 3,
-                        "choice_to_access": 2 
+                        "no_card": "inv1",
+                        "choice_to_access": [2] 
                     }
                 }
             ]
@@ -553,8 +553,8 @@
                         "min": 1
                     },
                     "card": {
-                        "no_card": 1,
-                        "choice_to_access": 1 
+                        "no_card": "ner0",
+                        "choice_to_access": [0,1] 
                     }
                 }
             ]
@@ -614,8 +614,8 @@
                         "min": 1
                     },
                     "card": {
-                        "no_card": 1,
-                        "choice_to_access": 0 
+                        "no_card": "nes0",
+                        "choice_to_access": [0] 
                     }
                 }
             ]
@@ -647,41 +647,8 @@
                         "min": 1
                     },
                     "card": {
-                        "no_card": 2,
-                        "choice_to_access": 1 
-                    }
-                }
-            ]
-        },
-        {
-            "pnjName": "nesmera",
-            "description": "Le capitaine de la garde me pose problème.. pourriez-vous vous en occuper ?",
-            "pnjImage": "nesmera",
-            "bgImage": "ruelle_sombre",
-            "no_card": "nes2",
-            "choices": [
-                {
-                    "description": "Je ne préfère pas prendre le risque."
-                },
-                {
-                    "description": "C'est comme si c'était fait. *Tuer le capitaine*",
-                    "argent": 20,
-                    "neutrality": -20
-                },
-                {
-                    "description": "Il entendra parler de moi.*Menacer le capitaine*",
-                    "argent": 10,
-                    "neutrality": -10
-                }
-            ],
-            "dependances": [
-                {
-                    "step": {
-                        "min": 1
-                    },
-                    "card": {
-                        "no_card": 2,
-                        "choice_to_access": 1 
+                        "no_card": "nes0",
+                        "choice_to_access": [1] 
                     }
                 }
             ]
@@ -734,7 +701,7 @@
                         "min": 1
                     },
                     "card": {
-                        "no_card": 1,
+                        "no_card": "ozz0",
                         "choice_to_access": 1 
                     }
                 }

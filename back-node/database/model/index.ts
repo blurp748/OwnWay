@@ -50,8 +50,8 @@ const cardSchema = new mongoose.Schema(
                     max: { type: Number }
                 },
                 card: {
-                    no_card: { type: Number },
-                    choice_to_access: { type: Number }
+                    no_card: { type: String },
+                    choice_to_access: [{ type: Number }]
                 }
             }
         ]

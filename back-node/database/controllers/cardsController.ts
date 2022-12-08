@@ -85,12 +85,21 @@ function filterCardDependances(cards: any, cardsPlayedWithChoice: any[]) {
       if (cardDependance == undefined) {
         cardsSelected.push(cardToCheck);
       } else {
-        var isAccessible = true;
+        var isAccessible = false;
+        //console.log(`cardDependance.no_card = ${cardDependance.no_card}`)
+        console.log(`cardDependance.choice_to_access = ${cardDependance.choice_to_access}`)
         cardsPlayedWithChoice.forEach((cardPlayed: any) => {
+          //console.log(`cardPlayed.card.no_card = ${cardPlayed.card.no_card}`)
           if (cardPlayed.card.no == cardDependance.no_card) {
-            if (cardPlayed.choice == cardDependance.choice_to_access) {
-              isAccessible = false;
-              //console.warn("filterCardDependances => On retire la carte "); console.log(cardToCheck);
+            if (cardDependance.choice_to_access.length == 0) {
+              isAccessible = true;
+            } else {
+              cardDependance.choice_to_access.forEach((choice: any) => {
+                if (cardPlayed.choice == choice) {
+                  isAccessible = true;
+                  //console.warn("filterCardDependances => On retire la carte "); console.log(cardToCheck);
+                }
+              });
             }
           }
         });
@@ -139,7 +148,7 @@ async function getNextCard(data: any) {
   player.playedCards.push(playerCardNChoice);
   //console.log("PlayerCardNChoice = "); console.log(playerCardNChoice);
   //console.log("Player.playedCards = "); console.log(player.playedCards);
-  
+
   const cardsFilterAlreadyPlayed = filterAlreadyPlayed(cardsFiltrerNeutrality, player.playedCards);
   //console.log("Cards filtered by already played = "); console.log(cardsFilterAlreadyPlayed);
 
@@ -191,9 +200,9 @@ exports.nextCard = async (req: any, res: any) => {
       let finishToSend = false;
       let playerToSend = playerController.formatPlayer(playerSaved);
       let cardToSend;
-      if(data.card){
+      if (data.card) {
         cardToSend = formatCard(data.card);
-      }else{
+      } else {
         cardToSend = null;
         finishToSend = true;
       }
@@ -202,7 +211,7 @@ exports.nextCard = async (req: any, res: any) => {
         card: cardToSend,
         finish: finishToSend
       };
-      if(dataToSend.card == undefined){
+      if (dataToSend.card == undefined) {
         dataToSend.finish = true;
       }
       res.send(dataToSend);

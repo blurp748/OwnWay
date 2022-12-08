@@ -1,5 +1,6 @@
 import cors from "cors";
 const db = require("../database/model");
+const data = require("../database/data/data");
 
 var express = require("express");
 var app = express();
@@ -20,6 +21,12 @@ db.mongoose
   })
   .then(() => {
     console.log("Connected to the database!");
+    console.log("DEBUG => initDB => start");
+    data.init().then((res: any) => {
+      console.log(res)
+    }).catch((err: any) => {
+      console.log(err)
+    });
   })
   .catch((err: any) => {
     console.log("Cannot connect to the database!\n", err);
@@ -29,9 +36,9 @@ db.mongoose
 
 // Home route
 app.get("/", (req: any, res: any) => {
-    res.json({ message: "Welcome to Kylian/Mathis API." });
+  res.json({ message: "Welcome to Kylian/Mathis API." });
 });
-  
+
 //Setting up routes
 require("../database/routes/routes")(app);
 
