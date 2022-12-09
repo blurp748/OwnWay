@@ -4,7 +4,6 @@ const Card = db.card;
 const Player = db.player;
 
 exports.initDB = async (req: any, res: any) => {
-    console.log("DEBUG => initDB => start");
     const cardsToSave = cards.cards;
     cardsToSave.forEach((cardJSON) => {
         const cardMongo = new Card(cardJSON);
@@ -18,7 +17,6 @@ exports.initDB = async (req: any, res: any) => {
             if (!alreadySaved) { await cardMongo.save(); }
         });
     });
-    console.log("DEBUG => initDB => end");
     res.send("initDB done");
 };
 

@@ -30,7 +30,6 @@ db.mongoose
   })
   .catch((err: any) => {
     console.log("Cannot connect to the database!\n", err);
-    //console.log(err.reason.servers);
     process.exit();
   });
 

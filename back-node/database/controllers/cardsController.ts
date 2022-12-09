@@ -32,13 +32,11 @@ function filterStep(cards: any, actualStep: Number) {
       if (stepDependance.min <= actualStep && stepDependance.max >= actualStep) {
         cardsSelected.push(card);
       } else {
-        //console.warn("filterStep => On retire la carte "); console.log(card);
       }
     } else {
       if (stepDependance.min <= actualStep) {
         cardsSelected.push(card);
       } else {
-        //console.warn("filterStep => On retire la carte "); console.log(card);
       }
     }
   })
@@ -52,7 +50,6 @@ function filterNeutrality(cards: any, actualNotority: Number) {
     if (neutralityDependance.min <= actualNotority && neutralityDependance.max >= actualNotority) {
       cardsSelected.push(card);
     } else {
-      //console.warn("filterNeutrality => On retire la carte "); console.log(card);
     }
   });
   return cardsSelected;
@@ -66,7 +63,6 @@ function filterAlreadyPlayed(cards: any, cardsPlayedWithChoice: any[]) {
       cardsPlayedWithChoice.forEach((cardPlayed: any) => {
         if (JSON.stringify(cardPlayed.card._id) == JSON.stringify(cardToCheck._id)) {
           isAlreadyPlayed = true;
-          //console.warn("filterAlreadyPlayed => On retire la carte "); console.log(cardToCheck);
         }
       })
       if (!isAlreadyPlayed) { cardsSelected.push(cardToCheck); }
@@ -86,23 +82,19 @@ function filterCardDependances(cards: any, cardsPlayedWithChoice: any[]) {
         cardsSelected.push(cardToCheck);
       } else {
         var isAccessible = false;
-        //console.log(`cardDependance.no_card = ${cardDependance.no_card}`)
-        console.log(`cardDependance.choice_to_access = ${cardDependance.choice_to_access}`)
-        cardsPlayedWithChoice.forEach((cardPlayed: any) => {
-          //console.log(`cardPlayed.card.no_card = ${cardPlayed.card.no_card}`)
-          if (cardPlayed.card.no == cardDependance.no_card) {
-            if (cardDependance.choice_to_access.length == 0) {
-              isAccessible = true;
-            } else {
+        if (cardDependance.choice_to_access.length == 0) {
+          isAccessible = true;
+        } else {
+          cardsPlayedWithChoice.forEach((cardPlayed: any) => {
+            if (cardPlayed.card.no_card == cardDependance.no_card) {
               cardDependance.choice_to_access.forEach((choice: any) => {
                 if (cardPlayed.choice == choice) {
                   isAccessible = true;
-                  //console.warn("filterCardDependances => On retire la carte "); console.log(cardToCheck);
                 }
               });
             }
-          }
-        });
+          });
+        }
         if (isAccessible) {
           cardsSelected.push(cardToCheck);
         }
@@ -133,30 +125,22 @@ async function getNextCard(data: any) {
   */
   var player = data.player;
   const cards = await Card.find();
-  //console.log("All cards = "); console.log(cards);
 
   const cardsFilterStep = filterStep(cards, player.step);
-  //console.log("Cards filtered by step = "); console.log(cardsFilterStep);
 
   const cardsFiltrerNeutrality = filterNeutrality(cardsFilterStep, player.neutrality);
-  //console.log("Cards filtered by notoriety = "); console.log(cardsFiltrerNeutrality);
 
   const playerCardNChoice = {
     card: data.card,
     choice: data.choice
   }
   player.playedCards.push(playerCardNChoice);
-  //console.log("PlayerCardNChoice = "); console.log(playerCardNChoice);
-  //console.log("Player.playedCards = "); console.log(player.playedCards);
 
   const cardsFilterAlreadyPlayed = filterAlreadyPlayed(cardsFiltrerNeutrality, player.playedCards);
-  //console.log("Cards filtered by already played = "); console.log(cardsFilterAlreadyPlayed);
 
   const cardFilterCardDependances = filterCardDependances(cardsFilterAlreadyPlayed, player.playedCards);
-  //console.log("Cards filtered by card dependances = "); console.log(cardFilterCardDependances);
 
   const cardToPlay = cardFilterCardDependances[Math.floor(Math.random() * cardFilterCardDependances.length)];
-  //console.log(`Card to play = ${cardToPlay}`);
 
   player.card = cardToPlay;
 
@@ -187,6 +171,7 @@ exports.nextCard = async (req: any, res: any) => {
     player!!.vie = dataReceived.vie;
     player!!.argent = dataReceived.argent;
     player!!.neutrality = dataReceived.neutrality;
+
 
     var card = await getCurrentCard(player);
     var data = {
@@ -228,7 +213,6 @@ exports.findFirstCard = () => {
     Card.find().then((cards_founded) => {
       if (cards_founded.length == 0) {
         console.log("No card found => Empty Database");
-        //data.initDB(resolve, reject)
         reject("No card found => Empty Database");
       } else {
         var card_found: any = undefined;
@@ -246,7 +230,6 @@ exports.findFirstCard = () => {
             }
           }
         });
-        //console.log("card_found : " + card_found);
         if (card_found != undefined) {
           const returnCard = new Card(card_found);
           resolve(formatCard(returnCard));
@@ -261,10 +244,8 @@ exports.findFirstCard = () => {
 }
 
 exports.findCardWithId = (id: ObjectId) => {
-  //console.log("DEBUG => findCardWithId => id : " + id);
   return new Promise((resolve, reject) => {
     Card.findById(id).then((card) => {
-      //console.log("DEBUG => findCardWithId => card : " + card);
       resolve(formatCard(card));
     }).catch((err) => {
       console.log("Error while find card with id => " + err);
